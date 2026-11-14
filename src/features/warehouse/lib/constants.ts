@@ -28,8 +28,9 @@ export const PARTS_FILTER_KEYS = [
 /**
  * "+ product" dialog with the Manual / From warehouse tabs: one fixed width
  * and one fixed height for both tabs, so switching them never resizes the
- * window. It stays centred like every other dialog (no custom positioning);
- * content is packed to the top (`content-start`) and scrolls inside.
+ * window. It stays centred like every other dialog (no custom positioning).
+ * A flex column instead of the default grid: header and tabs keep their
+ * height, the warehouse list stretches to the bottom; taller content scrolls.
  */
 export const ADD_PRODUCT_DIALOG_CLASS =
-  "sm:max-w-2xl h-[min(44rem,90vh)] content-start overflow-y-auto";
+  "sm:max-w-2xl h-[min(44rem,90vh)] flex flex-col overflow-y-auto";

@@ -32,9 +32,9 @@ export const WarehousePicker = ({
     useWarehouseSearch({ locationId, context });
 
   return (
-    // min-w-0: the dialog is a CSS grid — without it long (truncated) names
-    // stretch the column past the dialog edge.
-    <div className="flex min-w-0 flex-col gap-2">
+    // min-w-0: long (truncated) names must not widen the dialog;
+    // flex-1 + min-h-0: the list takes the rest of the dialog height.
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -48,7 +48,7 @@ export const WarehousePicker = ({
           <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground" />
         )}
       </div>
-      <ul className="flex max-h-80 flex-col overflow-y-auto rounded-md border">
+      <ul className="min-h-0 flex-1 overflow-y-auto rounded-md border">
         {!isLoading && results.length === 0 && (
           <li className="px-3 py-2 text-sm text-muted-foreground">
             {t("warehouse.picker.empty")}
