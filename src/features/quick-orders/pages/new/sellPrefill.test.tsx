@@ -69,8 +69,16 @@ describe("Showcase 'Sell' → new quick sale", () => {
   it("submits the line linked to the warehouse item, not as free text", async () => {
     renderWithSellState({
       locationId: 2,
-      product: { warehouseItemId: 41, name: "Павербанк Baseus", price: "1450" },
+      product: {
+        warehouseItemId: 41,
+        name: "Павербанк Baseus",
+        price: "1450",
+        purchasePrice: "140",
+      },
     });
+
+    // The draft row shows the card's purchase price before saving.
+    expect(screen.getByText("140")).toBeInTheDocument();
 
     // Payment method is the only thing the user has to pick.
     fireEvent.click(screen.getByLabelText("orders.paymentMethods.cash"));
@@ -94,7 +102,12 @@ describe("Showcase 'Sell' → new quick sale", () => {
   it("keeps the link after the line is opened and re-saved (e.g. a discount)", async () => {
     renderWithSellState({
       locationId: 2,
-      product: { warehouseItemId: 41, name: "Павербанк Baseus", price: "1450" },
+      product: {
+        warehouseItemId: 41,
+        name: "Павербанк Baseus",
+        price: "1450",
+        purchasePrice: "140",
+      },
     });
 
     fireEvent.click(screen.getByText("Павербанк Baseus"));

@@ -69,6 +69,7 @@ const ItemPageContent = ({ itemId }: ItemPageContentProps) => {
         warehouseItemId: item.id,
         name: item.name,
         price: item.price ?? "",
+        purchasePrice: item.purchasePrice ?? "",
       },
     };
     navigate(QUICK_ORDERS_LINKS.new(), { state });

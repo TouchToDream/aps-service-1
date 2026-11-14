@@ -75,6 +75,8 @@ export const quickOrderPrefillStateSchema = z.object({
     warehouseItemId: z.number().int().positive(),
     name: z.string(),
     price: z.string(),
+    /** Shown in the draft only — the backend copies it from the card. */
+    purchasePrice: z.string(),
   }),
 });
 export type QuickOrderPrefillState = z.infer<

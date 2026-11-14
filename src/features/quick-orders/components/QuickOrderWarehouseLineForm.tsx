@@ -48,7 +48,9 @@ export const QuickOrderWarehouseLineForm = ({
       name: result.name,
       price: values.price,
       quantity: isDonorPartSource(result) ? 1 : values.quantity,
-      purchasePrice: "",
+      // Shown in the draft row only; the DTO mapper never sends it for a
+      // warehouse line — the backend copies it from the card.
+      purchasePrice: result.purchasePrice ?? "",
       costPrice: "",
     });
     onClose();
