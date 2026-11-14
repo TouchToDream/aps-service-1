@@ -16,6 +16,7 @@ import {
   type ProductSourceTab,
   ProductSourceTabs,
 } from "@/features/warehouse/components/picker/ProductSourceTabs.tsx";
+import { ADD_PRODUCT_DIALOG_CLASS } from "@/features/warehouse/lib/constants.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
@@ -106,8 +107,7 @@ const AddOrderItemModal = ({
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent
-        // Room for the warehouse picker rows (badge, name, price, stock).
-        className={cn(isAddingProduct && "sm:max-w-2xl")}
+        className={cn(isAddingProduct && ADD_PRODUCT_DIALOG_CLASS)}
         onEscapeKeyDown={(e) => e.stopPropagation()}
       >
         <DialogHeader>
