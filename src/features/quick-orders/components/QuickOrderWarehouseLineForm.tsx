@@ -58,11 +58,11 @@ export const QuickOrderWarehouseLineForm = ({
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
-        className="flex min-w-0 flex-col gap-4"
+        className="flex min-w-0 flex-1 flex-col gap-4"
       >
         <SelectedWarehouseLine result={result} onChange={onBack} />
         <WarehouseLineFields isSinglePiece={isDonorPartSource(result)} />
-        <DialogFooter>
+        <DialogFooter className="mt-auto">
           <Button type="button" variant="outline" onClick={onClose}>
             {t("common.cancel")}
           </Button>

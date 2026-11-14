@@ -141,7 +141,7 @@ const AddOrderItemModal = ({
             )}
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
+              className="flex flex-1 flex-col gap-4"
             >
               <fieldset disabled={readOnly} className="contents">
                 <div className="flex flex-col gap-1">
@@ -285,7 +285,8 @@ const AddOrderItemModal = ({
                   {errors.root.message}
                 </p>
               )}
-              <DialogFooter>
+              {/* Pinned to the bottom so it lines up with the warehouse tab. */}
+              <DialogFooter className="mt-auto">
                 <Button type="button" variant="outline" onClick={onClose}>
                   {t("common.cancel")}
                 </Button>

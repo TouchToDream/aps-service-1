@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { QuickOrderWarehouseLineForm } from "@/features/quick-orders/components/QuickOrderWarehouseLineForm.tsx";
 import type { NewQuickOrderItemSchema } from "@/features/quick-orders/lib/schema.ts";
+import { PickerFooter } from "@/features/warehouse/components/picker/PickerFooter.tsx";
 import { WarehousePicker } from "@/features/warehouse/components/picker/WarehousePicker.tsx";
 import {
   WAREHOUSE_SEARCH_CONTEXTS,
@@ -26,12 +27,15 @@ export const QuickOrderWarehousePane = ({
 
   if (!picked) {
     return (
-      <WarehousePicker
-        locationId={locationId}
-        context={WAREHOUSE_SEARCH_CONTEXTS.QUICK_ORDER}
-        onPick={setPicked}
-        onManual={onManual}
-      />
+      <>
+        <WarehousePicker
+          locationId={locationId}
+          context={WAREHOUSE_SEARCH_CONTEXTS.QUICK_ORDER}
+          onPick={setPicked}
+          onManual={onManual}
+        />
+        <PickerFooter onClose={onClose} />
+      </>
     );
   }
 

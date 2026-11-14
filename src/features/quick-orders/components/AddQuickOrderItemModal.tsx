@@ -97,7 +97,7 @@ const AddQuickOrderItemModal = ({
         ) : (
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
+            className="flex flex-1 flex-col gap-4"
           >
             {isWarehouseLine && (
               <div className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm text-muted-foreground">
@@ -192,7 +192,8 @@ const AddQuickOrderItemModal = ({
                 </p>
               )}
             </div>
-            <DialogFooter>
+            {/* Pinned to the bottom so it lines up with the warehouse tab. */}
+            <DialogFooter className="mt-auto">
               <Button type="button" variant="outline" onClick={onClose}>
                 {t("common.cancel")}
               </Button>

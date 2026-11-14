@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { OrderWarehouseLineForm } from "@/features/orders/components/info-table/OrderWarehouseLineForm.tsx";
+import { PickerFooter } from "@/features/warehouse/components/picker/PickerFooter.tsx";
 import { WarehousePicker } from "@/features/warehouse/components/picker/WarehousePicker.tsx";
 import {
   WAREHOUSE_SEARCH_CONTEXTS,
@@ -25,12 +26,15 @@ export const OrderWarehouseProductPane = ({
 
   if (!picked) {
     return (
-      <WarehousePicker
-        locationId={locationId}
-        context={WAREHOUSE_SEARCH_CONTEXTS.ORDER}
-        onPick={setPicked}
-        onManual={onManual}
-      />
+      <>
+        <WarehousePicker
+          locationId={locationId}
+          context={WAREHOUSE_SEARCH_CONTEXTS.ORDER}
+          onPick={setPicked}
+          onManual={onManual}
+        />
+        <PickerFooter onClose={onClose} />
+      </>
     );
   }
 
