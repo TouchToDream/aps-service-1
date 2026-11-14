@@ -27,7 +27,7 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import { stripNonDigits } from "@/shared/lib/utils.ts";
+import { cn, stripNonDigits } from "@/shared/lib/utils.ts";
 import SearchableSelect from "@/widgets/searchable-select";
 
 interface AddOrderItemModalProps {
@@ -105,7 +105,11 @@ const AddOrderItemModal = ({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent onEscapeKeyDown={(e) => e.stopPropagation()}>
+      <DialogContent
+        // Room for the warehouse picker rows (badge, name, price, stock).
+        className={cn(isAddingProduct && "sm:max-w-2xl")}
+        onEscapeKeyDown={(e) => e.stopPropagation()}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

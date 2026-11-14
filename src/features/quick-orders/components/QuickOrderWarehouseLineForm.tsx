@@ -58,7 +58,7 @@ export const QuickOrderWarehouseLineForm = ({
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4"
+        className="flex min-w-0 flex-col gap-4"
       >
         <SelectedWarehouseLine result={result} onChange={onBack} />
         <WarehouseLineFields isSinglePiece={isDonorPartSource(result)} />

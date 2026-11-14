@@ -32,7 +32,9 @@ export const WarehousePicker = ({
     useWarehouseSearch({ locationId, context });
 
   return (
-    <div className="flex flex-col gap-2">
+    // min-w-0: the dialog is a CSS grid — without it long (truncated) names
+    // stretch the column past the dialog edge.
+    <div className="flex min-w-0 flex-col gap-2">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
