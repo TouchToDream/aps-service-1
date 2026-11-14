@@ -125,7 +125,11 @@ describe("Showcase 'Sell' → new quick sale", () => {
 
     await waitFor(() => expect(onSubmit).toHaveBeenCalled());
     expect(onSubmit.mock.calls[0][0].products).toEqual([
-      expect.objectContaining({ warehouseItemId: 41, price: "1300" }),
+      expect.objectContaining({
+        warehouseItemId: 41,
+        price: "1300",
+        purchasePrice: "140",
+      }),
     ]);
   });
 });

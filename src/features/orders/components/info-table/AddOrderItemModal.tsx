@@ -12,6 +12,7 @@ import { ManagerSelect } from "@/features/orders/components/ManagerSelect.tsx";
 import { useAddOrderItemForm } from "@/features/orders/hooks/useAddOrderItemForm.ts";
 import { useOrderItemSubmit } from "@/features/orders/hooks/useOrderItemSubmit.ts";
 import type { OrderItem, OrderItemType } from "@/features/orders/types.ts";
+import { InfoField } from "@/features/warehouse/components/InfoField.tsx";
 import {
   type ProductSourceTab,
   ProductSourceTabs,
@@ -31,7 +32,7 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import { cn, stripNonDigits } from "@/shared/lib/utils.ts";
+import { cn, formatMoney, stripNonDigits } from "@/shared/lib/utils.ts";
 import SearchableSelect from "@/widgets/searchable-select";
 
 interface AddOrderItemModalProps {
@@ -182,7 +183,15 @@ const AddOrderItemModal = ({
                     </p>
                   )}
                 </div>
-                {type === "product" && (
+                {type === "product" && isWarehouseLine && (
+                  // The backend takes it from the warehouse card — show, never edit.
+                  <InfoField label={t("orders.orderTable.form.purchasePrice")}>
+                    {editItem?.purchasePrice
+                      ? formatMoney(editItem.purchasePrice)
+                      : "—"}
+                  </InfoField>
+                )}
+                {type === "product" && !isWarehouseLine && (
                   <div className="flex flex-col gap-1">
                     <Label>{t("orders.orderTable.form.purchasePrice")}</Label>
                     <Input
@@ -192,8 +201,6 @@ const AddOrderItemModal = ({
                           e.currentTarget.value,
                         );
                       }}
-                      readOnly={isWarehouseLine}
-                      className={READ_ONLY_INPUT_CLASS}
                       {...register("purchasePrice")}
                     />
                     {errors.purchasePrice && (

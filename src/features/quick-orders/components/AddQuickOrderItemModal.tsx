@@ -7,6 +7,7 @@ import { QuickOrderWarehousePane } from "@/features/quick-orders/components/Quic
 import { useQuickOrderItemForm } from "@/features/quick-orders/hooks/useQuickOrderItemForm.ts";
 import type { NewQuickOrderItemSchema } from "@/features/quick-orders/lib/schema.ts";
 import type { QuickOrderItemType } from "@/features/quick-orders/types.ts";
+import { InfoField } from "@/features/warehouse/components/InfoField.tsx";
 import {
   type ProductSourceTab,
   ProductSourceTabs,
@@ -25,7 +26,7 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Input } from "@/shared/components/ui/input.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
-import { cn, stripNonDigits } from "@/shared/lib/utils.ts";
+import { cn, formatMoney, stripNonDigits } from "@/shared/lib/utils.ts";
 import SearchableSelect from "@/widgets/searchable-select";
 
 interface AddQuickOrderItemModalProps {
@@ -141,7 +142,15 @@ const AddQuickOrderItemModal = ({
                 </p>
               )}
             </div>
-            {type === "product" && (
+            {type === "product" && isWarehouseLine && (
+              // The backend takes it from the warehouse card — show, never edit.
+              <InfoField label={t("quickOrders.itemForm.purchasePrice")}>
+                {editItem?.purchasePrice
+                  ? formatMoney(editItem.purchasePrice)
+                  : "—"}
+              </InfoField>
+            )}
+            {type === "product" && !isWarehouseLine && (
               <div className="flex flex-col gap-1">
                 <Label>{t("quickOrders.itemForm.purchasePrice")}</Label>
                 <Input
@@ -151,8 +160,6 @@ const AddQuickOrderItemModal = ({
                       e.currentTarget.value,
                     );
                   }}
-                  readOnly={isWarehouseLine}
-                  className={READ_ONLY_INPUT_CLASS}
                   {...register("purchasePrice")}
                 />
                 {errors.purchasePrice && (
