@@ -52,9 +52,9 @@ export const SwapDonorField = ({
         fetchItems={fetchAvailableDonorOptions}
         queryKey={queryKeys.warehouse.availableDonorOptions()}
         renderOption={renderOption}
+        // SearchableSelect renders the message itself (red border + text).
         error={error ? { type: "validate", message: error } : undefined}
       />
-      {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
   );
 };

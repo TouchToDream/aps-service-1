@@ -42,8 +42,8 @@ export const DictionaryRefField = <TMeta = undefined,>({
       queryKey={queryKey}
       renderOption={renderOption}
       disabled={disabled}
+      // SearchableSelect renders the message itself (red border + text).
       error={error ? { type: "validate", message: error } : undefined}
     />
-    {error && <p className="text-sm text-destructive">{error}</p>}
   </div>
 );
