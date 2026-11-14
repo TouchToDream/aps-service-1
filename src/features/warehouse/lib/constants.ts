@@ -26,10 +26,10 @@ export const PARTS_FILTER_KEYS = [
 ] as const;
 
 /**
- * "+ product" dialog with the Manual / From warehouse tabs: same width for
- * both tabs and pinned to the top instead of vertically centred, so switching
- * tabs (different content heights) doesn't make the window jump. Scrolls
- * inside when the content is taller than the screen.
+ * "+ product" dialog with the Manual / From warehouse tabs: one fixed width
+ * and one fixed height for both tabs, so switching them never resizes the
+ * window. It stays centred like every other dialog (no custom positioning);
+ * content is packed to the top (`content-start`) and scrolls inside.
  */
 export const ADD_PRODUCT_DIALOG_CLASS =
-  "sm:max-w-2xl top-[8vh] translate-y-0 max-h-[84vh] overflow-y-auto";
+  "sm:max-w-2xl h-[min(44rem,90vh)] content-start overflow-y-auto";
