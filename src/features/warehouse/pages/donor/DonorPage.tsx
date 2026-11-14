@@ -8,7 +8,6 @@ import { warehouseApi } from "@/features/warehouse/api";
 import { DonorFormDialog } from "@/features/warehouse/components/donor-form/DonorFormDialog.tsx";
 import { DonorTitle } from "@/features/warehouse/components/DonorTitle.tsx";
 import { PartFormDialog } from "@/features/warehouse/components/part-form/PartFormDialog.tsx";
-import { DonorStatusBadge } from "@/features/warehouse/components/StatusBadges.tsx";
 import { useCanManageWarehouse } from "@/features/warehouse/hooks/useCanManageWarehouse.ts";
 import { useDeleteWarehouseEntity } from "@/features/warehouse/hooks/useDeleteWarehouseEntity.ts";
 import { useDonor } from "@/features/warehouse/hooks/useDonor.ts";
@@ -66,7 +65,6 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
               <h1 className="text-lg font-bold break-words sm:text-2xl">
                 <DonorTitle donor={donor} />
               </h1>
-              <DonorStatusBadge status={donor.status} />
             </div>
             {canManage && (
               <div className="flex gap-2">

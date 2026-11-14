@@ -1,5 +1,4 @@
 import { DonorTitle } from "@/features/warehouse/components/DonorTitle.tsx";
-import { DonorStatusBadge } from "@/features/warehouse/components/StatusBadges.tsx";
 import type { Donor } from "@/features/warehouse/types.ts";
 import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
 import { type ColumnConfig } from "@/widgets/table/models/types.ts";
@@ -20,13 +19,6 @@ export function buildDonorColumns(): ColumnConfig<Donor>[] {
       sortable: true,
       sortKey: "device_model",
       renderCell: (_value, donor) => <DonorTitle donor={donor} />,
-    },
-    {
-      key: "status",
-      field: "status",
-      labelKey: "warehouse.table.status",
-      sortable: false,
-      renderCell: (_value, donor) => <DonorStatusBadge status={donor.status} />,
     },
     {
       key: "partsCount",

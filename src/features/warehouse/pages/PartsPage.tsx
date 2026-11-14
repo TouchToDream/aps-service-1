@@ -61,7 +61,9 @@ const PartsPage = () => {
       {dialog && (
         <PartFormDialog
           part={dialog.part}
-          donorId={dialog.part?.donor?.id ?? null}
+          // Parts created here are always standalone; a donor's parts are
+          // added from the donor card.
+          donorId={null}
           defaultLocationId={user?.location?.id ?? null}
           onClose={() => setDialog(null)}
         />

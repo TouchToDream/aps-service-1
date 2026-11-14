@@ -19,9 +19,14 @@ import {
 } from "@/shared/components/ui/dialog.tsx";
 import { Label } from "@/shared/components/ui/label.tsx";
 
+type StockOffice = { id: number; name: string };
+
 interface StockMovementDialogProps {
   itemId: number;
   reason: ManualStockReason;
+  /** Purchase / write-off: the office of the clicked stock row (not asked). */
+  office: StockOffice | null;
+  /** Correction: the office is picked in the form, this is the default. */
   defaultLocationId: number | null;
   onClose: () => void;
 }
@@ -29,6 +34,7 @@ interface StockMovementDialogProps {
 export const StockMovementDialog = ({
   itemId,
   reason,
+  office,
   defaultLocationId,
   onClose,
 }: StockMovementDialogProps) => {
@@ -36,7 +42,7 @@ export const StockMovementDialog = ({
   const { methods, onSubmit, isPending } = useStockMovementForm({
     itemId,
     reason,
-    defaultLocationId,
+    defaultLocationId: office?.id ?? defaultLocationId,
     onSuccess: onClose,
   });
   const {
@@ -52,6 +58,7 @@ export const StockMovementDialog = ({
         <DialogHeader>
           <DialogTitle>{t(`warehouse.stock.${reason}`)}</DialogTitle>
           <DialogDescription>
+            {office && `${t("warehouse.stock.location")}: ${office.name}. `}
             {t("warehouse.stock.irreversible")}
           </DialogDescription>
         </DialogHeader>
@@ -60,18 +67,20 @@ export const StockMovementDialog = ({
             onSubmit={methods.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
-            <Controller
-              name="locationId"
-              control={control}
-              render={({ field }) => (
-                <LocationSelectField
-                  label={t("warehouse.stock.location")}
-                  value={field.value}
-                  onChange={field.onChange}
-                  error={errors.locationId?.message}
-                />
-              )}
-            />
+            {!office && (
+              <Controller
+                name="locationId"
+                control={control}
+                render={({ field }) => (
+                  <LocationSelectField
+                    label={t("warehouse.stock.location")}
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={errors.locationId?.message}
+                  />
+                )}
+              />
+            )}
             <div className="flex flex-col gap-1">
               <Label>{t("warehouse.stock.quantity")}</Label>
               <FormField
@@ -86,14 +95,20 @@ export const StockMovementDialog = ({
                 </p>
               )}
             </div>
-            <div className="flex flex-col gap-1">
-              <Label>{t("warehouse.stock.note")}</Label>
-              <FormField
-                autoComplete="off"
-                error={errors.note}
-                {...register("note")}
-              />
-            </div>
+            {/* Purchase asks only for the quantity. */}
+            {reason !== MANUAL_STOCK_REASONS.PURCHASE && (
+              <div className="flex flex-col gap-1">
+                <Label>
+                  {t("warehouse.stock.note")}
+                  {isCorrection && " *"}
+                </Label>
+                <FormField
+                  autoComplete="off"
+                  error={errors.note}
+                  {...register("note")}
+                />
+              </div>
+            )}
             {errors.root && (
               <p className="text-sm text-destructive">{errors.root.message}</p>
             )}

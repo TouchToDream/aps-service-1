@@ -4,7 +4,6 @@ import { LocationDtoSchema } from "@/entities/location/dto.ts";
 import { SupplierDtoSchema } from "@/features/dictionaries/api/dto.ts";
 import { UserDtoSchema } from "@/features/users/api/dto.ts";
 import {
-  DONOR_STATUSES,
   PART_CONDITIONS,
   PART_STATUSES,
   STOCK_MOVEMENT_REASONS,
@@ -122,9 +121,9 @@ export const DonorShortDtoSchema = z.object({
 export type DonorShortDto = z.infer<typeof DonorShortDtoSchema>;
 
 export const DonorDtoSchema = DonorShortDtoSchema.extend({
-  status: zodEnumFromConst(DONOR_STATUSES),
   storage_place: StoragePlaceDtoSchema.nullable(),
   source_order_id: z.number().nullable(),
+  origin: z.string().nullable(),
   handed_over_order_id: z.number().nullable(),
   supplier: SupplierDtoSchema.nullable(),
   location: LocationDtoSchema.nullable(),

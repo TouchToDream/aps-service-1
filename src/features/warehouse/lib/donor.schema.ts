@@ -13,7 +13,7 @@ export const donorSchema = () =>
       manufacturer: z.string().trim(),
       deviceType: z.string().trim(),
       deviceModel: z.string().trim(),
-      sourceOrderId: optionalDigitsField(),
+      origin: z.string().trim().max(255),
       acquisitionCost: optionalDigitsField(),
       storagePlace: dictionaryRefField(),
       locationId: z

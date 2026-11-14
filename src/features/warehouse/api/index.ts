@@ -261,10 +261,19 @@ export const warehouseApi = {
     return mapPaginatedDonorPartsDto(dto);
   },
 
-  createPart: async (data: NewDonorPart): Promise<DonorPart> => {
+  /**
+   * With a donor — attached to it (`POST /donors/{id}/parts`); without — a
+   * standalone part (`POST /parts`). A part can't be re-attached later.
+   */
+  createPart: async (
+    data: NewDonorPart,
+    donorId: number | null,
+  ): Promise<DonorPart> => {
     const payload = mapNewDonorPartToDto(data);
     const response = await post<typeof payload, DataEnvelope<DonorPartDto>>(
-      WAREHOUSE_API.parts(),
+      donorId === null
+        ? WAREHOUSE_API.parts()
+        : WAREHOUSE_API.donorParts(donorId),
       payload,
     );
     const dto = parseDto(DonorPartDtoSchema, response.data);

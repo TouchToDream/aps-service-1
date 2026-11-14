@@ -43,10 +43,6 @@ function toRef(entity: { id: number; name: string } | null): DictionaryRef {
   return entity ? { id: entity.id, name: entity.name } : EMPTY_REF;
 }
 
-function toOptionalNumber(value: string): number | null {
-  return value ? Number(value) : null;
-}
-
 // ── Display ─────────────────────────────────────────────────────────────────
 
 /** "Lenovo Ноутбук IdeaPad 3", or null when the donor has no device data at all. */
@@ -156,7 +152,7 @@ export function getDonorFormDefaults(
       manufacturer: "",
       deviceType: "",
       deviceModel: "",
-      sourceOrderId: "",
+      origin: "",
       acquisitionCost: "",
       storagePlace: EMPTY_REF,
       locationId: defaultLocationId ?? undefined,
@@ -167,8 +163,7 @@ export function getDonorFormDefaults(
     manufacturer: donor.manufacturer ?? "",
     deviceType: donor.deviceType ?? "",
     deviceModel: donor.deviceModel ?? "",
-    sourceOrderId:
-      donor.sourceOrderId === null ? "" : String(donor.sourceOrderId),
+    origin: donor.origin ?? "",
     acquisitionCost: donor.acquisitionCost ?? "",
     storagePlace: toRef(donor.storagePlace),
     locationId: donor.location?.id ?? defaultLocationId ?? undefined,
@@ -189,7 +184,7 @@ export function mapDonorFormToNewDonor(
     manufacturer: values.manufacturer,
     deviceType: values.deviceType,
     deviceModel: values.deviceModel,
-    sourceOrderId: toOptionalNumber(values.sourceOrderId),
+    origin: values.origin,
     supplierId: donor?.supplier?.id ?? null,
     acquisitionCost: values.acquisitionCost,
     storagePlace: values.storagePlace,
@@ -202,12 +197,10 @@ export function mapDonorFormToNewDonor(
 
 export function getDonorPartFormDefaults(
   part: DonorPart | undefined,
-  donorId: number | null,
   defaultLocationId: number | null,
 ): Partial<DonorPartSchema> {
   if (!part) {
     return {
-      donorId,
       category: EMPTY_REF,
       name: "",
       condition: PART_CONDITIONS.UNKNOWN,
@@ -218,7 +211,6 @@ export function getDonorPartFormDefaults(
     };
   }
   return {
-    donorId: part.donor?.id ?? null,
     category: toRef(part.category),
     name: part.name ?? "",
     condition: part.condition,
@@ -233,7 +225,6 @@ export function mapDonorPartFormToNewPart(
   values: DonorPartSchema,
 ): NewDonorPart {
   return {
-    donorId: values.donorId,
     category: values.category,
     name: values.name,
     condition: values.condition,

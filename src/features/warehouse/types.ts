@@ -47,14 +47,6 @@ export const MANUAL_STOCK_REASONS = {
 export type ManualStockReason =
   (typeof MANUAL_STOCK_REASONS)[keyof typeof MANUAL_STOCK_REASONS];
 
-export const DONOR_STATUSES = {
-  AVAILABLE: "available",
-  DISASSEMBLING: "disassembling",
-  GIVEN_TO_CUSTOMER: "given_to_customer",
-  DISPOSED: "disposed",
-} as const;
-export type DonorStatus = (typeof DONOR_STATUSES)[keyof typeof DONOR_STATUSES];
-
 export const PART_CONDITIONS = {
   ALIVE: "alive",
   UNKNOWN: "unknown",
@@ -176,10 +168,16 @@ export type DonorShort = {
   deviceModel: string | null;
 };
 
+/**
+ * A donor is listed only while it is physically in the workshop: a swapped or
+ * written-off donor disappears (and its card returns 404). No status field.
+ */
 export type Donor = DonorShort & {
-  status: DonorStatus;
   storagePlace: StoragePlace | null;
+  /** Set by the system when the donor was born from an order (read-only). */
   sourceOrderId: number | null;
+  /** Free text: where the donor came from ("bought dead on OLX", …). */
+  origin: string | null;
   handedOverOrderId: number | null;
   supplier: Supplier | null;
   location: Location | null;
@@ -212,7 +210,7 @@ export type NewDonor = {
   manufacturer: string;
   deviceType: string;
   deviceModel: string;
-  sourceOrderId: number | null;
+  origin: string;
   supplierId: number | null;
   acquisitionCost: string;
   storagePlace: DictionaryRef;
@@ -220,8 +218,8 @@ export type NewDonor = {
   note: string;
 };
 
+/** Which donor a part belongs to is decided by the endpoint, not the body. */
 export type NewDonorPart = {
-  donorId: number | null;
   category: DictionaryRef;
   name: string;
   condition: PartCondition;

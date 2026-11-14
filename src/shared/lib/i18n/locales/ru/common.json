@@ -1293,12 +1293,6 @@
       "correction": "Корректировка",
       "return": "Возврат"
     },
-    "donorStatuses": {
-      "available": "Доступен",
-      "disassembling": "Разбирается",
-      "given_to_customer": "Выдан клиенту",
-      "disposed": "Списан"
-    },
     "partConditions": {
       "alive": "Рабочая",
       "unknown": "Не проверена",
@@ -1369,7 +1363,7 @@
       "title": "Движение остатка",
       "purchase": "Приход",
       "writeoff": "Списать",
-      "correction": "Корректировать",
+      "correction": "Корректировка",
       "location": "Офис",
       "quantity": "Количество",
       "correctionHint": "Со знаком: +5 добавит, -2 уберёт",
@@ -1387,7 +1381,8 @@
         "manufacturer": "Бренд",
         "deviceType": "Тип устройства",
         "deviceModel": "Модель",
-        "sourceOrderId": "Заказ-источник (ID)",
+        "origin": "Откуда",
+        "originPlaceholder": "Купили мертвяка на OLX / Остался от клиента вместо оплаты диагностики / Купили у клиента / Принёс знакомый",
         "supplier": "Поставщик",
         "acquisitionCost": "Сколько отдали",
         "storagePlace": "Место хранения",
@@ -1404,7 +1399,7 @@
       "unnamed": "Донор #{{id}}",
       "dispose": "Списать",
       "disposeTitle": "Списать донора?",
-      "disposeDescription": "Донор и его доступные запчасти будут списаны, запись скроется со склада. Донор, уже выданный клиенту, сохранит этот статус.",
+      "disposeDescription": "Донор и его доступные запчасти будут списаны, донор исчезнет со склада.",
       "disposeSuccess": "Донор списан"
     },
     "part": {

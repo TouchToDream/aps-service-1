@@ -16,7 +16,7 @@ export const WAREHOUSE_SEARCH_LIMIT = 50;
 /** URL filter keys each warehouse table forwards to its list endpoint. */
 export const ITEMS_FILTER_KEYS = ["category_id", "location_id"] as const;
 
-export const DONORS_FILTER_KEYS = ["status", "location_id"] as const;
+export const DONORS_FILTER_KEYS = ["location_id"] as const;
 
 export const PARTS_FILTER_KEYS = [
   "category_id",

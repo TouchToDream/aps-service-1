@@ -11,7 +11,6 @@ import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 export const donorPartSchema = () =>
   z
     .object({
-      donorId: z.number().int().positive().nullable(),
       category: dictionaryRefField(),
       name: z.string().trim(),
       condition: zodEnumFromConst(PART_CONDITIONS),

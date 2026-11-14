@@ -6,6 +6,7 @@ import {
   type InfoTableColumn,
 } from "@/features/orders/components/info-table/InfoTable.tsx";
 import { StockQuantity } from "@/features/warehouse/components/StockQuantity.tsx";
+import { isShowcaseKind } from "@/features/warehouse/lib/service.ts";
 import {
   MANUAL_STOCK_REASONS,
   type ManualStockReason,
@@ -22,10 +23,16 @@ interface ItemStocksCardProps {
   item: WarehouseItemDetail;
   canManage: boolean;
   canSell: boolean;
-  onMovement: (reason: ManualStockReason) => void;
+  /** Row actions pass their office; the card-level correction passes null. */
+  onMovement: (reason: ManualStockReason, stock: WarehouseStock | null) => void;
   onSell: (locationId: number) => void;
 }
 
+/**
+ * Each office row has two actions: showcase — Purchase + Sell, supplies —
+ * Purchase + Write off. One "Correction" per card (office picked inside).
+ * Three reasons for one mechanic so the log tells bought / spent / re-counted.
+ */
 export const ItemStocksCard = ({
   item,
   canManage,
@@ -34,6 +41,7 @@ export const ItemStocksCard = ({
   onSell,
 }: ItemStocksCardProps) => {
   const { t } = useTranslation();
+  const isShowcase = isShowcaseKind(item.kind);
 
   // Every office comes from the backend, zeros included — render them all.
   const rows: StockRow[] = item.stocks.map((stock) => ({
@@ -41,6 +49,43 @@ export const ItemStocksCard = ({
     id: stock.locationId,
   }));
 
+  const renderActions = (row: StockRow) => (
+    <div className="flex justify-end gap-2">
+      {canManage && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => onMovement(MANUAL_STOCK_REASONS.PURCHASE, row)}
+        >
+          {t("warehouse.stock.purchase")}
+        </Button>
+      )}
+      {isShowcase && canSell && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => onSell(row.locationId)}
+        >
+          <ShoppingCart className="h-4 w-4" />
+          {t("warehouse.item.sell")}
+        </Button>
+      )}
+      {!isShowcase && canManage && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => onMovement(MANUAL_STOCK_REASONS.WRITEOFF, row)}
+        >
+          {t("warehouse.stock.writeoff")}
+        </Button>
+      )}
+    </div>
+  );
+
+  const hasRowActions = canManage || (isShowcase && canSell);
   const columns: InfoTableColumn<StockRow>[] = [
     {
       key: "location",
@@ -52,24 +97,8 @@ export const ItemStocksCard = ({
       label: t("warehouse.table.quantity"),
       render: (row) => <StockQuantity quantity={row.quantity} />,
     },
-    ...(canSell
-      ? [
-          {
-            key: "sell",
-            label: "",
-            render: (row: StockRow) => (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => onSell(row.locationId)}
-              >
-                <ShoppingCart className="h-4 w-4" />
-                {t("warehouse.item.sell")}
-              </Button>
-            ),
-          },
-        ]
+    ...(hasRowActions
+      ? [{ key: "actions", label: "", render: renderActions }]
       : []),
   ];
 
@@ -81,19 +110,14 @@ export const ItemStocksCard = ({
             {t("warehouse.item.stocks")}
           </h2>
           {canManage && (
-            <div className="flex flex-wrap gap-2">
-              {Object.values(MANUAL_STOCK_REASONS).map((reason) => (
-                <Button
-                  key={reason}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onMovement(reason)}
-                >
-                  {t(`warehouse.stock.${reason}`)}
-                </Button>
-              ))}
-            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => onMovement(MANUAL_STOCK_REASONS.CORRECTION, null)}
+            >
+              {t("warehouse.stock.correction")}
+            </Button>
           )}
         </div>
         <InfoTable columns={columns} data={rows} />

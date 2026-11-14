@@ -1291,12 +1291,6 @@
       "correction": "Коригування",
       "return": "Повернення"
     },
-    "donorStatuses": {
-      "available": "Доступний",
-      "disassembling": "Розбирається",
-      "given_to_customer": "Видано клієнту",
-      "disposed": "Списаний"
-    },
     "partConditions": {
       "alive": "Робоча",
       "unknown": "Не перевірена",
@@ -1367,7 +1361,7 @@
       "title": "Рух залишку",
       "purchase": "Прихід",
       "writeoff": "Списати",
-      "correction": "Коригувати",
+      "correction": "Коригування",
       "location": "Офіс",
       "quantity": "Кількість",
       "correctionHint": "Зі знаком: +5 додасть, -2 прибере",
@@ -1385,7 +1379,8 @@
         "manufacturer": "Бренд",
         "deviceType": "Тип пристрою",
         "deviceModel": "Модель",
-        "sourceOrderId": "Замовлення-походження (ID)",
+        "origin": "Звідки",
+        "originPlaceholder": "Купили мертвяка на OLX / Залишився від клієнта замість оплати діагностики / Купили у клієнта / Приніс кент",
         "supplier": "Постачальник",
         "acquisitionCost": "Скільки віддали",
         "storagePlace": "Місце зберігання",
@@ -1402,7 +1397,7 @@
       "unnamed": "Донор #{{id}}",
       "dispose": "Списати",
       "disposeTitle": "Списати донора?",
-      "disposeDescription": "Донора та його доступні запчастини буде списано, запис зникне зі складу. Донор, уже виданий клієнту, збереже цей статус.",
+      "disposeDescription": "Донора та його доступні запчастини буде списано, донор зникне зі складу.",
       "disposeSuccess": "Донора списано"
     },
     "part": {

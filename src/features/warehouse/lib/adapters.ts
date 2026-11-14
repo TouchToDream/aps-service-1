@@ -126,11 +126,11 @@ function mapDonorShortDto(dto: DonorShortDto): DonorShort {
 export function mapDonorDto(dto: DonorDto): Donor {
   return {
     ...mapDonorShortDto(dto),
-    status: dto.status,
     storagePlace: dto.storage_place
       ? mapStoragePlaceDto(dto.storage_place)
       : null,
     sourceOrderId: dto.source_order_id,
+    origin: dto.origin,
     handedOverOrderId: dto.handed_over_order_id,
     supplier: dto.supplier ? mapSupplierDtoToSupplier(dto.supplier) : null,
     location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
@@ -247,7 +247,7 @@ export function mapNewDonorToDto(donor: NewDonor) {
     manufacturer: donor.manufacturer || null,
     device_type: donor.deviceType || null,
     device_model: donor.deviceModel || null,
-    source_order_id: donor.sourceOrderId,
+    origin: donor.origin || null,
     supplier_id: donor.supplierId,
     acquisition_cost: donor.acquisitionCost || null,
     storage_place_id: donor.storagePlace.id,
@@ -259,7 +259,6 @@ export function mapNewDonorToDto(donor: NewDonor) {
 
 export function mapNewDonorPartToDto(part: NewDonorPart) {
   return {
-    donor_id: part.donorId,
     category_id: part.category.id,
     category_name: getNewRefName(part.category),
     name: part.name || null,

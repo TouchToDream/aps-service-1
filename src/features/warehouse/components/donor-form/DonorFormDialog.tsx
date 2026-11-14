@@ -77,25 +77,26 @@ export const DonorFormDialog = ({
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="flex flex-col gap-1">
-                <Label>{t("warehouse.donor.fields.sourceOrderId")}</Label>
-                <FormField
-                  inputMode="numeric"
-                  onInput={onDigitsInput}
-                  error={errors.sourceOrderId}
-                  {...register("sourceOrderId")}
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <Label>{t("warehouse.donor.fields.acquisitionCost")}</Label>
-                <FormField
-                  inputMode="numeric"
-                  onInput={onDigitsInput}
-                  error={errors.acquisitionCost}
-                  {...register("acquisitionCost")}
-                />
-              </div>
+            {/* "Where it came from" — a separate question from the note
+                ("what's alive, what's dead"). */}
+            <div className="flex flex-col gap-1">
+              <Label>{t("warehouse.donor.fields.origin")}</Label>
+              <FormField
+                autoComplete="off"
+                maxLength={255}
+                placeholder={t("warehouse.donor.fields.originPlaceholder")}
+                error={errors.origin}
+                {...register("origin")}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label>{t("warehouse.donor.fields.acquisitionCost")}</Label>
+              <FormField
+                inputMode="numeric"
+                onInput={onDigitsInput}
+                error={errors.acquisitionCost}
+                {...register("acquisitionCost")}
+              />
             </div>
             <Controller
               name="locationId"

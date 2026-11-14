@@ -4,10 +4,7 @@ import {
   filterByName,
   getDonorTitle,
 } from "@/features/warehouse/lib/service.ts";
-import {
-  DONOR_STATUSES,
-  type WarehouseCategoryKind,
-} from "@/features/warehouse/types.ts";
+import type { WarehouseCategoryKind } from "@/features/warehouse/types.ts";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { SEARCH_PAGE_SIZE } from "@/shared/lib/constants.ts";
@@ -66,7 +63,7 @@ export type DonorOptionMeta = {
   storagePlaceName: string | null;
 };
 
-/** Only available donors can be handed over in a swap. */
+/** Every listed donor is physically in the workshop — any can be handed over. */
 export const fetchAvailableDonorOptions = async (
   search: string,
 ): Promise<SearchableSelectOption<DonorOptionMeta>[]> => {
@@ -75,10 +72,7 @@ export const fetchAvailableDonorOptions = async (
     SEARCH_PAGE_SIZE,
     null,
     "none",
-    {
-      status: DONOR_STATUSES.AVAILABLE,
-      ...(search ? { search } : {}),
-    },
+    search ? { search } : undefined,
   );
   return items.map((donor) => ({
     id: donor.id,

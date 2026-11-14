@@ -19,7 +19,10 @@ import { WAREHOUSE_LINKS } from "@/features/warehouse/navigation.ts";
 import { ItemInfoCard } from "@/features/warehouse/pages/item/ItemInfoCard.tsx";
 import { ItemMovementsCard } from "@/features/warehouse/pages/item/ItemMovementsCard.tsx";
 import { ItemStocksCard } from "@/features/warehouse/pages/item/ItemStocksCard.tsx";
-import type { ManualStockReason } from "@/features/warehouse/types.ts";
+import type {
+  ManualStockReason,
+  WarehouseStock,
+} from "@/features/warehouse/types.ts";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
@@ -28,7 +31,12 @@ import { Button } from "@/shared/components/ui/button.tsx";
 type ItemDialog =
   | { type: "edit" }
   | { type: "delete" }
-  | { type: "movement"; reason: ManualStockReason }
+  | {
+      type: "movement";
+      reason: ManualStockReason;
+      /** null → correction, the office is picked in the form. */
+      stock: WarehouseStock | null;
+    }
   | null;
 
 interface ItemPageContentProps {
@@ -113,7 +121,9 @@ const ItemPageContent = ({ itemId }: ItemPageContentProps) => {
             item={item}
             canManage={canManage}
             canSell={canSell}
-            onMovement={(reason) => setDialog({ type: "movement", reason })}
+            onMovement={(reason, stock) =>
+              setDialog({ type: "movement", reason, stock })
+            }
             onSell={handleSell}
           />
           <ItemMovementsCard movements={item.movements} />
@@ -129,6 +139,14 @@ const ItemPageContent = ({ itemId }: ItemPageContentProps) => {
             <StockMovementDialog
               itemId={item.id}
               reason={dialog.reason}
+              office={
+                dialog.stock
+                  ? {
+                      id: dialog.stock.locationId,
+                      name: dialog.stock.location.name,
+                    }
+                  : null
+              }
               defaultLocationId={user?.location?.id ?? null}
               onClose={() => setDialog(null)}
             />

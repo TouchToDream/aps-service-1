@@ -22,7 +22,7 @@ import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 const FIELD_MAP = {
   device_type: "deviceType",
   device_model: "deviceModel",
-  source_order_id: "sourceOrderId",
+  origin: "origin",
   acquisition_cost: "acquisitionCost",
   storage_place_id: "storagePlace",
   storage_place_name: "storagePlace",

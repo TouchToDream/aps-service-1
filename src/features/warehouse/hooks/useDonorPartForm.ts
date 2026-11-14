@@ -29,6 +29,7 @@ const FIELD_MAP = {
 
 type UseDonorPartFormParams = {
   part?: DonorPart;
+  /** For a new part: attach to this donor, or null for a standalone part. */
   donorId: number | null;
   defaultLocationId: number | null;
   onSuccess: () => void;
@@ -50,7 +51,7 @@ export const useDonorPartForm = ({
 
   const methods = useForm<DonorPartFormValues, unknown, DonorPartSchema>({
     resolver: zodResolver(donorPartSchema()),
-    defaultValues: getDonorPartFormDefaults(part, donorId, defaultLocationId),
+    defaultValues: getDonorPartFormDefaults(part, defaultLocationId),
   });
 
   const mutation = useMutation({
@@ -58,7 +59,7 @@ export const useDonorPartForm = ({
       const payload = mapDonorPartFormToNewPart(values);
       return part
         ? warehouseApi.updatePart(part.id, payload)
-        : warehouseApi.createPart(payload);
+        : warehouseApi.createPart(payload, donorId);
     },
     onSuccess: () => {
       toast.success(

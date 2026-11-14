@@ -53,11 +53,17 @@ export const DonorInfoCard = ({ donor }: DonorInfoCardProps) => {
             <MoneyAmount value={donor.acquisitionCost} />
           )}
         </InfoField>
-        <InfoField label={t("warehouse.donor.sourceOrder")}>
-          {donor.sourceOrderId !== null && (
+        {donor.origin && (
+          <InfoField label={t("warehouse.donor.fields.origin")}>
+            {donor.origin}
+          </InfoField>
+        )}
+        {/* Set by the system when the donor was born from an order. */}
+        {donor.sourceOrderId !== null && (
+          <InfoField label={t("warehouse.donor.sourceOrder")}>
             <OrderLink orderId={donor.sourceOrderId} />
-          )}
-        </InfoField>
+          </InfoField>
+        )}
         {donor.handedOverOrderId !== null && (
           <InfoField label={t("warehouse.donor.handedOverOrder")}>
             <OrderLink orderId={donor.handedOverOrderId} />

@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { mapNewProductToDto } from "@/features/orders/lib/adapters.ts";
-import { mapNewWarehouseItemToDto } from "@/features/warehouse/lib/adapters.ts";
+import {
+  mapNewDonorPartToDto,
+  mapNewWarehouseItemToDto,
+} from "@/features/warehouse/lib/adapters.ts";
 
 describe("mapNewWarehouseItemToDto", () => {
   const base = {
@@ -83,5 +86,21 @@ describe("mapNewProductToDto (order line)", () => {
       supplier_name: "Rozetka",
       manager_id: 12,
     });
+  });
+});
+
+describe("mapNewDonorPartToDto", () => {
+  it("never sends donor_id — the endpoint decides the donor", () => {
+    const dto = mapNewDonorPartToDto({
+      category: { id: 11, name: "Матриця" },
+      name: "",
+      condition: "alive",
+      status: "available",
+      storagePlace: { id: null, name: "Коробка 3" },
+      locationId: 1,
+      note: "",
+    });
+    expect(dto).not.toHaveProperty("donor_id");
+    expect(dto.storage_place_name).toBe("Коробка 3");
   });
 });

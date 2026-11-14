@@ -87,13 +87,14 @@ describe("mapDonorFormToNewDonor", () => {
       manufacturer: "Lenovo",
       deviceType: "",
       deviceModel: "IdeaPad 3",
-      sourceOrderId: "1234",
+      origin: "Купили мертвяка на OLX",
       acquisitionCost: "",
       storagePlace: { id: 2, name: "Полиця А1" },
       locationId: 1,
       note: "",
     });
     expect(dto).not.toHaveProperty("status");
-    expect(dto.sourceOrderId).toBe(1234);
+    expect(dto.origin).toBe("Купили мертвяка на OLX");
+    expect(dto).not.toHaveProperty("sourceOrderId");
   });
 });
