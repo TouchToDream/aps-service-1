@@ -10,6 +10,14 @@ export const WAREHOUSE_PHOTO_COMPRESSION = {
   maxSizeMB: 1.9,
 } as const;
 
+/**
+ * Fields of a warehouse line the backend takes from the card (purchase price,
+ * a donor part's quantity). They stay readOnly — not disabled, so the form
+ * still has the value — but must look locked like a disabled input.
+ */
+export const READ_ONLY_INPUT_CLASS =
+  "read-only:cursor-not-allowed read-only:opacity-50";
+
 /** Default and maximum row count of the unified "+ product" search. */
 export const WAREHOUSE_SEARCH_LIMIT = 50;
 

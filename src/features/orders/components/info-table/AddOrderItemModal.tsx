@@ -16,7 +16,10 @@ import {
   type ProductSourceTab,
   ProductSourceTabs,
 } from "@/features/warehouse/components/picker/ProductSourceTabs.tsx";
-import { ADD_PRODUCT_DIALOG_CLASS } from "@/features/warehouse/lib/constants.ts";
+import {
+  ADD_PRODUCT_DIALOG_CLASS,
+  READ_ONLY_INPUT_CLASS,
+} from "@/features/warehouse/lib/constants.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
@@ -190,6 +193,7 @@ const AddOrderItemModal = ({
                         );
                       }}
                       readOnly={isWarehouseLine}
+                      className={READ_ONLY_INPUT_CLASS}
                       {...register("purchasePrice")}
                     />
                     {errors.purchasePrice && (
@@ -226,6 +230,7 @@ const AddOrderItemModal = ({
                     inputMode="numeric"
                     min={1}
                     readOnly={isDonorPartLine}
+                    className={READ_ONLY_INPUT_CLASS}
                   />
                   {errors.quantity && (
                     <p className="text-sm text-destructive">
