@@ -31,6 +31,7 @@ import { MobileHistoryDrawer } from "@/features/orders/pages/order-page/componen
 import { PaymentsCard } from "@/features/orders/pages/order-page/components/PaymentsCard.tsx";
 import { ProductsAndServicesCard } from "@/features/orders/pages/order-page/components/ProductsAndServicesCard.tsx";
 import { buildOrderHistory } from "@/features/orders/pages/order-page/services.ts";
+import { OrderWarehouseActions } from "@/features/warehouse/components/order-actions/OrderWarehouseActions.tsx";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import {
@@ -165,6 +166,10 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                             />
                           </>
                         )}
+                        <OrderWarehouseActions
+                          orderId={orderId}
+                          locationId={selectedOrder.location?.id ?? null}
+                        />
                         <button
                           type="button"
                           className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"

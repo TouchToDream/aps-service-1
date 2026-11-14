@@ -147,6 +147,28 @@ export const queryKeys = {
     searchByName: () => [...queryKeys.referrals.all, "search-by-name"] as const,
   },
 
+  warehouse: {
+    all: ["warehouse"] as const,
+    items: makeEntityKey(["warehouse"], "items"),
+    item: (id: number) => [...queryKeys.warehouse.all, "item", id] as const,
+    donors: makeEntityKey(["warehouse"], "donors"),
+    donor: (id: number) => [...queryKeys.warehouse.all, "donor", id] as const,
+    parts: makeEntityKey(["warehouse"], "parts"),
+    availableDonorOptions: () =>
+      [...queryKeys.warehouse.all, "available-donor-options"] as const,
+    categories: (kind?: string) =>
+      [
+        ...queryKeys.warehouse.all,
+        "categories",
+        ...(kind ? [kind] : []),
+      ] as const,
+    storagePlaces: () =>
+      [...queryKeys.warehouse.all, "storage-places"] as const,
+    searchAll: () => [...queryKeys.warehouse.all, "search"] as const,
+    search: (q: string, locationId: number | null, context: string) =>
+      [...queryKeys.warehouse.searchAll(), q, locationId, context] as const,
+  },
+
   statistics: {
     all: ["statistics"] as const,
     revenue: (filters: StatisticsFilters, granularity?: Granularity) =>

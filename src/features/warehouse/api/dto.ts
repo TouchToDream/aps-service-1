@@ -1,0 +1,190 @@
+import { z } from "zod";
+
+import { LocationDtoSchema } from "@/entities/location/dto.ts";
+import { SupplierDtoSchema } from "@/features/dictionaries/api/dto.ts";
+import { UserDtoSchema } from "@/features/users/api/dto.ts";
+import {
+  DONOR_STATUSES,
+  PART_CONDITIONS,
+  PART_STATUSES,
+  STOCK_MOVEMENT_REASONS,
+  WAREHOUSE_CATEGORY_KINDS,
+  WAREHOUSE_ITEM_KINDS,
+  WAREHOUSE_SOURCES,
+  WAREHOUSE_UNITS,
+} from "@/features/warehouse/types.ts";
+import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
+
+const PaginationMetaDtoSchema = z.object({
+  current_page: z.number(),
+  last_page: z.number(),
+  total: z.number(),
+});
+
+// ── Dictionaries ────────────────────────────────────────────────────────────
+
+export const WarehouseCategoryDtoSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  kind: zodEnumFromConst(WAREHOUSE_CATEGORY_KINDS),
+});
+export type WarehouseCategoryDto = z.infer<typeof WarehouseCategoryDtoSchema>;
+
+export const WarehouseCategoriesDtoSchema = z.object({
+  data: z.array(WarehouseCategoryDtoSchema),
+});
+
+export const StoragePlaceDtoSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  location_id: z.number().nullable(),
+});
+export type StoragePlaceDto = z.infer<typeof StoragePlaceDtoSchema>;
+
+export const StoragePlaceResponseDtoSchema = z.object({
+  data: StoragePlaceDtoSchema,
+});
+
+export const StoragePlacesDtoSchema = z.object({
+  data: z.array(StoragePlaceDtoSchema),
+});
+
+// ── Items ───────────────────────────────────────────────────────────────────
+
+export const WarehouseStockDtoSchema = z.object({
+  id: z.number(),
+  location_id: z.number(),
+  location: LocationDtoSchema,
+  quantity: z.number(),
+});
+export type WarehouseStockDto = z.infer<typeof WarehouseStockDtoSchema>;
+
+export const StockMovementDtoSchema = z.object({
+  id: z.number(),
+  location: LocationDtoSchema.nullable(),
+  delta: z.number(),
+  reason: zodEnumFromConst(STOCK_MOVEMENT_REASONS),
+  order_id: z.number().nullable(),
+  quick_order_id: z.number().nullable(),
+  order_product_id: z.number().nullable(),
+  user: UserDtoSchema.nullable(),
+  note: z.string().nullable(),
+  created_at: z.iso.datetime(),
+});
+export type StockMovementDto = z.infer<typeof StockMovementDtoSchema>;
+
+export const WarehouseItemDtoSchema = z.object({
+  id: z.number(),
+  kind: zodEnumFromConst(WAREHOUSE_ITEM_KINDS),
+  category: WarehouseCategoryDtoSchema,
+  name: z.string(),
+  price: z.string().nullable(),
+  purchase_price: z.string().nullable(),
+  supplier: SupplierDtoSchema.nullable(),
+  order_url: z.string().nullable(),
+  unit: zodEnumFromConst(WAREHOUSE_UNITS),
+  min_quantity: z.number().nullable(),
+  storage_place: StoragePlaceDtoSchema.nullable(),
+  photo_url: z.string().nullable(),
+  stocks: z.array(WarehouseStockDtoSchema),
+  total_quantity: z.number(),
+});
+export type WarehouseItemDto = z.infer<typeof WarehouseItemDtoSchema>;
+
+export const WarehouseItemDetailDtoSchema = WarehouseItemDtoSchema.extend({
+  movements: z.array(StockMovementDtoSchema),
+  created_at: z.iso.datetime(),
+  updated_at: z.iso.datetime(),
+});
+export type WarehouseItemDetailDto = z.infer<
+  typeof WarehouseItemDetailDtoSchema
+>;
+
+export const PaginatedWarehouseItemsDtoSchema = z.object({
+  data: z.array(WarehouseItemDtoSchema),
+  meta: PaginationMetaDtoSchema,
+});
+export type PaginatedWarehouseItemsDto = z.infer<
+  typeof PaginatedWarehouseItemsDtoSchema
+>;
+
+// ── Donors & parts ──────────────────────────────────────────────────────────
+
+export const DonorShortDtoSchema = z.object({
+  id: z.number(),
+  manufacturer: z.string().nullable(),
+  device_type: z.string().nullable(),
+  device_model: z.string().nullable(),
+});
+export type DonorShortDto = z.infer<typeof DonorShortDtoSchema>;
+
+export const DonorDtoSchema = DonorShortDtoSchema.extend({
+  status: zodEnumFromConst(DONOR_STATUSES),
+  storage_place: StoragePlaceDtoSchema.nullable(),
+  source_order_id: z.number().nullable(),
+  handed_over_order_id: z.number().nullable(),
+  supplier: SupplierDtoSchema.nullable(),
+  location: LocationDtoSchema.nullable(),
+  acquisition_cost: z.string().nullable(),
+  note: z.string().nullable(),
+  parts_count: z.number(),
+});
+export type DonorDto = z.infer<typeof DonorDtoSchema>;
+
+export const DonorPartDtoSchema = z.object({
+  id: z.number(),
+  donor: DonorShortDtoSchema.nullable(),
+  category: WarehouseCategoryDtoSchema,
+  name: z.string().nullable(),
+  condition: zodEnumFromConst(PART_CONDITIONS),
+  status: zodEnumFromConst(PART_STATUSES),
+  storage_place: StoragePlaceDtoSchema.nullable(),
+  location: LocationDtoSchema.nullable(),
+  note: z.string().nullable(),
+  photo_url: z.string().nullable(),
+  used_in_order_id: z.number().nullable(),
+});
+export type DonorPartDto = z.infer<typeof DonorPartDtoSchema>;
+
+export const DonorDetailDtoSchema = DonorDtoSchema.extend({
+  parts: z.array(DonorPartDtoSchema),
+  created_at: z.iso.datetime(),
+  updated_at: z.iso.datetime(),
+});
+export type DonorDetailDto = z.infer<typeof DonorDetailDtoSchema>;
+
+export const PaginatedDonorsDtoSchema = z.object({
+  data: z.array(DonorDtoSchema),
+  meta: PaginationMetaDtoSchema,
+});
+export type PaginatedDonorsDto = z.infer<typeof PaginatedDonorsDtoSchema>;
+
+export const PaginatedDonorPartsDtoSchema = z.object({
+  data: z.array(DonorPartDtoSchema),
+  meta: PaginationMetaDtoSchema,
+});
+export type PaginatedDonorPartsDto = z.infer<
+  typeof PaginatedDonorPartsDtoSchema
+>;
+
+// ── Unified search ──────────────────────────────────────────────────────────
+
+export const WarehouseSearchResultDtoSchema = z.object({
+  source: zodEnumFromConst(WAREHOUSE_SOURCES),
+  id: z.number(),
+  name: z.string(),
+  category: WarehouseCategoryDtoSchema,
+  price: z.string().nullable(),
+  purchase_price: z.string().nullable(),
+  quantity: z.number().nullable(),
+  storage_place: StoragePlaceDtoSchema.nullable(),
+  location: LocationDtoSchema.nullable(),
+});
+export type WarehouseSearchResultDto = z.infer<
+  typeof WarehouseSearchResultDtoSchema
+>;
+
+export const WarehouseSearchDtoSchema = z.object({
+  data: z.array(WarehouseSearchResultDtoSchema),
+});
+export type WarehouseSearchDto = z.infer<typeof WarehouseSearchDtoSchema>;

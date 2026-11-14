@@ -118,7 +118,8 @@
       "accessories_page": {
         "title": "Комплектации"
       }
-    }
+    },
+    "warehouse": "Склад"
   },
   "errors": {
     "unknown": "Неизвестная ошибка",
@@ -245,7 +246,12 @@
     "finance": "Финансы",
     "withdrawalRequests": "Запросы на выплату",
     "integrations": "Интеграции",
-    "quickOrders": "Продажи"
+    "quickOrders": "Продажи",
+    "warehouse": "Склад",
+    "showcase": "Витрина",
+    "supplies": "Расходники",
+    "donors": "Доноры",
+    "parts": "Запчасти"
   },
   "profile": {
     "settings": "Настройки профиля",
@@ -270,7 +276,8 @@
         "quick_orders": "Продажи",
         "referrals": "Рефералы",
         "statistics": "Статистика",
-        "banking": "Банкинг"
+        "banking": "Банкинг",
+        "warehouse": "Склад"
       },
       "orders_view": "Просмотр",
       "orders_manage": "Управление",
@@ -293,7 +300,8 @@
       "dictionaries_locations_manage": "Локации (ред.)",
       "dictionaries_price_list_manage": "Прайс-лист (ред.)",
       "statistics_view": "Просмотр",
-      "banking_view": "Просмотр"
+      "banking_view": "Просмотр",
+      "warehouse_manage": "Управление"
     },
     "master_rate": "Ставка сотрудника",
     "services_percent": "Процент за услуги",
@@ -1248,6 +1256,218 @@
       "paid_out": "Выплачено",
       "balance": "Баланс (заявка+счет)",
       "available": "Доступно (счет)"
+    }
+  },
+  "warehouse": {
+    "tabs": {
+      "showcase": "Витрина",
+      "supplies": "Расходники",
+      "donors": "Доноры"
+    },
+    "donorsView": {
+      "donors": "Доноры",
+      "parts": "Запчасти"
+    },
+    "kinds": {
+      "showcase": "Витрина",
+      "supply": "Расходник"
+    },
+    "sources": {
+      "showcase": "Витрина",
+      "supply": "Расходник",
+      "donor_part": "Донор"
+    },
+    "units": {
+      "piece": "шт",
+      "ml": "мл",
+      "g": "г",
+      "pack": "уп"
+    },
+    "reasons": {
+      "purchase": "Приход",
+      "sale": "Продажа",
+      "order": "Заказ",
+      "writeoff": "Списание",
+      "correction": "Корректировка",
+      "return": "Возврат"
+    },
+    "donorStatuses": {
+      "available": "Доступен",
+      "disassembling": "Разбирается",
+      "given_to_customer": "Выдан клиенту",
+      "disposed": "Списан"
+    },
+    "partConditions": {
+      "alive": "Рабочая",
+      "unknown": "Не проверена",
+      "dead": "Нерабочая"
+    },
+    "partStatuses": {
+      "available": "Доступна",
+      "used": "Использована",
+      "sold": "Продана",
+      "disposed": "Списана"
+    },
+    "noLocation": "без офиса",
+    "noCategory": "Без категории",
+    "filters": {
+      "allCategories": "Все категории",
+      "allLocations": "Все офисы",
+      "allStatuses": "Все статусы",
+      "allConditions": "Любое состояние",
+      "lowStock": "Нужно докупить",
+      "clear": "Сбросить фильтр"
+    },
+    "table": {
+      "id": "№",
+      "photo": "Фото",
+      "name": "Название",
+      "category": "Категория",
+      "price": "Цена",
+      "purchasePrice": "Закупка",
+      "quantity": "Остаток",
+      "storagePlace": "Где лежит",
+      "device": "Устройство",
+      "status": "Статус",
+      "location": "Офис",
+      "partsCount": "Запчастей",
+      "condition": "Состояние",
+      "donor": "Донор"
+    },
+    "item": {
+      "create": "Новая позиция",
+      "edit": "Редактировать позицию",
+      "fields": {
+        "category": "Категория",
+        "name": "Название",
+        "price": "Цена продажи",
+        "purchasePrice": "Закупка",
+        "supplier": "Поставщик",
+        "orderUrl": "Ссылка «Докупить»",
+        "unit": "Единица",
+        "minQuantity": "Минимальный остаток",
+        "storagePlace": "Место хранения"
+      },
+      "purchasePriceHint": "Заполните закупку — иначе маржа и комиссия мастера будут считаться от полной цены",
+      "successCreate": "Позиция создана",
+      "successUpdate": "Позиция обновлена",
+      "deleteTitle": "Удалить позицию?",
+      "deleteDescription": "Позиция исчезнет из склада. История заказов не изменится.",
+      "stocks": "Остатки по офисам",
+      "noStocks": "Остатков пока нет",
+      "total": "Всего",
+      "movements": "История движений",
+      "noMovements": "Движений пока нет",
+      "buyMore": "Докупить",
+      "sell": "Продать",
+      "lowStock": "Ниже минимума",
+      "notFound": "Позиция не найдена"
+    },
+    "photo": {
+      "upload": "Загрузить фото",
+      "replace": "Заменить фото",
+      "success": "Фото обновлено"
+    },
+    "stock": {
+      "title": "Движение остатка",
+      "purchase": "Приход",
+      "writeoff": "Списать",
+      "correction": "Корректировать",
+      "location": "Офис",
+      "quantity": "Количество",
+      "correctionHint": "Со знаком: +5 добавит, -2 уберёт",
+      "note": "Комментарий",
+      "nonZero": "Количество не может быть 0",
+      "success": "Остаток обновлён",
+      "irreversible": "Движение нельзя удалить — при ошибке сделайте встречное.",
+      "order": "Заказ #{{id}}",
+      "quickOrder": "Продажа #{{id}}"
+    },
+    "donor": {
+      "create": "Новый донор",
+      "edit": "Редактировать донора",
+      "fields": {
+        "manufacturer": "Бренд",
+        "deviceType": "Тип устройства",
+        "deviceModel": "Модель",
+        "sourceOrderId": "Заказ-источник (ID)",
+        "supplier": "Поставщик",
+        "acquisitionCost": "Сколько отдали",
+        "status": "Статус",
+        "storagePlace": "Место хранения",
+        "location": "Офис",
+        "note": "Комментарий"
+      },
+      "statusLockedHint": "Донор выдан клиенту — статус изменить нельзя",
+      "disposeHint": "При списании донора его доступные запчасти тоже будут списаны",
+      "successCreate": "Донор создан",
+      "successUpdate": "Донор обновлён",
+      "deleteTitle": "Удалить донора?",
+      "deleteDescription": "Донор будет удалён со склада.",
+      "parts": "Запчасти",
+      "noParts": "Запчастей пока нет",
+      "addPart": "Добавить запчасть",
+      "sourceOrder": "Из заказа",
+      "handedOverOrder": "Выдан в заказе",
+      "unnamed": "Донор #{{id}}"
+    },
+    "part": {
+      "create": "Новая запчасть",
+      "edit": "Редактировать запчасть",
+      "fields": {
+        "donor": "Донор",
+        "category": "Категория",
+        "name": "Название",
+        "namePlaceholder": "Если пусто — покажем название категории",
+        "condition": "Состояние",
+        "status": "Статус",
+        "storagePlace": "Место хранения",
+        "location": "Офис",
+        "note": "Комментарий"
+      },
+      "successCreate": "Запчасть создана",
+      "successUpdate": "Запчасть обновлена",
+      "deleteTitle": "Удалить запчасть?",
+      "deleteDescription": "Запчасть будет удалена со склада.",
+      "withoutDonor": "Без донора",
+      "usedInOrder": "В заказе"
+    },
+    "picker": {
+      "warehouse": "Со склада",
+      "manual": "Вручную",
+      "searchPlaceholder": "Название или категория",
+      "empty": "Ничего не найдено",
+      "enterManually": "Вписать вручную",
+      "inStock": "Остаток",
+      "change": "Выбрать другое",
+      "partUnavailable": "Эта запчасть уже недоступна",
+      "partQuantityHint": "Запчасть донора всегда продаётся поштучно",
+      "readOnlyHint": "Название и закупка берутся из карточки склада"
+    },
+    "badges": {
+      "warehouse": "Склад",
+      "donor": "Донор"
+    },
+    "orderActions": {
+      "toDonor": "В доноры",
+      "toDonorTitle": "Разобрать устройство на запчасти",
+      "toDonorDescription": "Из данных заказа будет создан донор без запчастей.",
+      "noLocation": "Сначала укажите офис заказа",
+      "toDonorSuccess": "Донор создан",
+      "swap": "Свап",
+      "swapTitle": "Выдать донора клиенту",
+      "swapDescription": "Клиент получает донора целиком вместо ремонта. В заказ добавится строка с донором, а из устройства клиента будет создан новый донор.",
+      "swapDonor": "Какого донора выдаём",
+      "swapPrice": "Цена в заказе",
+      "swapStoragePlace": "Куда положить нового донора",
+      "swapManager": "Исполнитель",
+      "swapConfirm": "Выдать",
+      "swapSuccess": "Донор выдан клиенту"
+    },
+    "search": {
+      "items": "Поиск по названию или категории",
+      "donors": "Поиск по донору",
+      "parts": "Поиск по названию или категории"
     }
   }
 }

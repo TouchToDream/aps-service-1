@@ -30,6 +30,10 @@ export const newQuickOrderItemSchema = () =>
       .refine((value) => !value || /^\d+$/.test(value), {
         message: i18next.t("validation.digitsOnly"),
       }),
+    // Set when the product was picked from the warehouse; the name is then
+    // only for display — the backend takes it from the card.
+    warehouseItemId: z.number().int().positive().nullable().default(null),
+    donorPartId: z.number().int().positive().nullable().default(null),
   });
 export type NewQuickOrderItemSchema = z.infer<
   ReturnType<typeof newQuickOrderItemSchema>
@@ -58,4 +62,21 @@ export type NewQuickOrderSchema = z.infer<
 >;
 export type NewQuickOrderFormValues = z.input<
   ReturnType<typeof newQuickOrderSchema>
+>;
+
+/**
+ * Router state for "Sell" on a showcase card: opens the new quick sale with
+ * that item already added (price from the card, quantity 1) and the office
+ * whose stock was being looked at.
+ */
+export const quickOrderPrefillStateSchema = z.object({
+  locationId: z.number().int().positive(),
+  product: z.object({
+    warehouseItemId: z.number().int().positive(),
+    name: z.string(),
+    price: z.string(),
+  }),
+});
+export type QuickOrderPrefillState = z.infer<
+  typeof quickOrderPrefillStateSchema
 >;

@@ -1,6 +1,7 @@
 import i18next from "i18next";
 import { z } from "zod";
 
+import { warehouseLineSchema } from "@/features/warehouse/lib/line.schema.ts";
 import { emailRegex } from "@/shared/lib/constants.ts";
 import {
   optionalPhoneField,
@@ -153,3 +154,18 @@ export const prefillStateSchema = z.object({
     })
     .optional(),
 });
+
+/** "+ product" → "From warehouse" on an order: the warehouse line plus its executor. */
+export const orderWarehouseLineSchema = () =>
+  warehouseLineSchema().extend({
+    managerId: z
+      .number({ error: i18next.t("validation.field_required") })
+      .int()
+      .positive(),
+  });
+export type OrderWarehouseLineFormValues = z.input<
+  ReturnType<typeof orderWarehouseLineSchema>
+>;
+export type OrderWarehouseLineSchema = z.infer<
+  ReturnType<typeof orderWarehouseLineSchema>
+>;

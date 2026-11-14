@@ -25,6 +25,8 @@ export const useDeleteOrderItem = (
       // Removing a service/product recalculates the referral's pending
       // referral_income — refresh referrals so the pending amount stays in sync.
       void queryClient.invalidateQueries({ queryKey: queryKeys.referrals.all });
+      // Deleting a warehouse line returns its stock / frees the donor part.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.warehouse.all });
       // Broad invalidation (not just this order's detail) — removing an item
       // changes the order's total sum, which the orders table also displays,
       // so the list cache needs refreshing too.

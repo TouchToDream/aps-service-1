@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   ShoppingCart,
   Users,
+  Warehouse,
   Wrench,
 } from "lucide-react";
 import { memo } from "react";
@@ -29,6 +30,7 @@ import { ROLES_PERMISSIONS_LINKS } from "@/features/roles-permissions/navigation
 import { SMS_INTEGRATION_LINKS } from "@/features/sms-integration/navigation.ts";
 import { STATISTICS_LINKS } from "@/features/statistics/navigation.ts";
 import { USERS_LINKS } from "@/features/users/navigation";
+import { WAREHOUSE_LINKS } from "@/features/warehouse/navigation.ts";
 import { WORKS_LINKS } from "@/features/works/navigation";
 import { SidebarNavItem } from "@/shared/components/common/SidebarNavItem.tsx";
 import {
@@ -84,6 +86,12 @@ export const Sidebar = memo(() => {
                   onClick={closeMobileSidebar}
                 />
               )}
+              <SidebarNavItem
+                to={WAREHOUSE_LINKS.root()}
+                icon={Warehouse}
+                label={t("sidebar.warehouse")}
+                onClick={closeMobileSidebar}
+              />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

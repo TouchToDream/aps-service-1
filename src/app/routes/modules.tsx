@@ -16,6 +16,8 @@ import { ROLES_PERMISSIONS_ROUTES } from "@/features/roles-permissions/routes.ts
 import { SMS_INTEGRATION_ROUTES } from "@/features/sms-integration/routes.ts";
 import { STATISTICS_ROUTES } from "@/features/statistics/routes.ts";
 import { USERS_ROUTES } from "@/features/users/routes";
+import { WAREHOUSE_LINKS } from "@/features/warehouse/navigation.ts";
+import { WAREHOUSE_ROUTES } from "@/features/warehouse/routes.ts";
 import { WORKS_ROUTES } from "@/features/works/routes";
 
 const OrdersPage = lazy(() => import("@/features/orders/pages"));
@@ -119,6 +121,24 @@ const ReferralTransactionsPage = lazy(
   () => import("@/features/referrals/pages/transactions"),
 );
 const StatisticsPage = lazy(() => import("@/features/statistics/pages"));
+const WarehouseShowcasePage = lazy(
+  () => import("@/features/warehouse/pages/ShowcasePage.tsx"),
+);
+const WarehouseSuppliesPage = lazy(
+  () => import("@/features/warehouse/pages/SuppliesPage.tsx"),
+);
+const WarehouseItemPage = lazy(
+  () => import("@/features/warehouse/pages/item/ItemPage.tsx"),
+);
+const WarehouseDonorsPage = lazy(
+  () => import("@/features/warehouse/pages/DonorsPage.tsx"),
+);
+const WarehouseDonorPage = lazy(
+  () => import("@/features/warehouse/pages/donor/DonorPage.tsx"),
+);
+const WarehousePartsPage = lazy(
+  () => import("@/features/warehouse/pages/PartsPage.tsx"),
+);
 
 export const modulesRoutes: RouteObject = {
   children: [
@@ -283,6 +303,18 @@ export const modulesRoutes: RouteObject = {
       element: <ProtectedRoute requiredAbility={ABILITIES.STATISTICS_VIEW} />,
       children: [{ path: STATISTICS_ROUTES.root, element: <StatisticsPage /> }],
     },
+    // Warehouse: viewing is open to every active employee; editing is gated
+    // inside the pages by `warehouse_manage`.
+    {
+      path: WAREHOUSE_ROUTES.root,
+      element: <Navigate to={WAREHOUSE_LINKS.showcase()} replace />,
+    },
+    { path: WAREHOUSE_ROUTES.showcase, element: <WarehouseShowcasePage /> },
+    { path: WAREHOUSE_ROUTES.supplies, element: <WarehouseSuppliesPage /> },
+    { path: WAREHOUSE_ROUTES.item, element: <WarehouseItemPage /> },
+    { path: WAREHOUSE_ROUTES.donors, element: <WarehouseDonorsPage /> },
+    { path: WAREHOUSE_ROUTES.parts, element: <WarehousePartsPage /> },
+    { path: WAREHOUSE_ROUTES.donor, element: <WarehouseDonorPage /> },
     {
       path: WORKS_ROUTES.root,
       element: <WorksPage />,

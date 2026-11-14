@@ -9,6 +9,7 @@ import type {
   QuickOrderDetailDto,
   QuickOrderDto,
 } from "@/features/quick-orders/api/dto.ts";
+import type { NewQuickOrderItemSchema } from "@/features/quick-orders/lib/schema.ts";
 import type {
   NewQuickOrder,
   QuickOrder,
@@ -73,11 +74,30 @@ export function mapNewQuickOrderToDto(order: NewQuickOrder) {
       cost_price: service.costPrice || undefined,
       quantity: service.quantity,
     })),
-    products: order.products.map((product) => ({
-      name: product.name,
+    products: order.products.map(mapNewQuickOrderProductToDto),
+  };
+}
+
+function mapNewQuickOrderProductToDto(product: NewQuickOrderItemSchema) {
+  // Warehouse lines: name and purchase price come from the card, never sent.
+  if (product.warehouseItemId !== null) {
+    return {
+      warehouse_item_id: product.warehouseItemId,
       price: product.price,
-      purchase_price: product.purchasePrice || undefined,
       quantity: product.quantity,
-    })),
+    };
+  }
+  if (product.donorPartId !== null) {
+    return {
+      donor_part_id: product.donorPartId,
+      price: product.price,
+      quantity: product.quantity,
+    };
+  }
+  return {
+    name: product.name,
+    price: product.price,
+    purchase_price: product.purchasePrice || undefined,
+    quantity: product.quantity,
   };
 }

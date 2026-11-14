@@ -11,6 +11,7 @@ import { useDeleteOrderItem } from "@/features/orders/hooks/useDeleteOrderItem.t
 import { calcOrderItemTotal } from "@/features/orders/lib/cellFormatters.tsx";
 import { type ModalState } from "@/features/orders/pages/order-page/types.ts";
 import { type OrderInfo, type OrderItem } from "@/features/orders/types.ts";
+import { WarehouseLineBadge } from "@/features/warehouse/components/WarehouseLineBadge.tsx";
 import { useKeyboardShortcut } from "@/shared/hooks/useKeyboardShortcut.ts";
 
 interface ProductsAndServicesCardProps {
@@ -78,6 +79,12 @@ export const ProductsAndServicesCard = ({
             <Cog className="h-4 w-4 shrink-0 text-blue-500" />
           )}
           {row.name}
+          {row.type === "product" && (
+            <WarehouseLineBadge
+              warehouseItemId={row.warehouseItemId}
+              donorPartId={row.donorPartId}
+            />
+          )}
         </span>
       ),
     },
@@ -166,6 +173,7 @@ export const ProductsAndServicesCard = ({
         <Suspense>
           <AddOrderItemModal
             orderId={orderId}
+            locationId={selectedOrder.location?.id ?? null}
             type={modalType}
             open
             onClose={() => setModalState(null)}

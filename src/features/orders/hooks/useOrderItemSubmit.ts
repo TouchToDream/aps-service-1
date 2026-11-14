@@ -54,6 +54,10 @@ export const useOrderItemSubmit = ({
           supplierName: data.supplierName ?? "",
           quantity: data.quantity,
           managerId: data.managerId,
+          // Manual add, or an edit: PUT never re-links the source, and for a
+          // warehouse line the backend ignores name/purchase price anyway.
+          warehouseItemId: null,
+          donorPartId: null,
         };
         return isEdit
           ? ordersApi.editProductInOrder(orderId, payload, editItemId)
@@ -87,6 +91,8 @@ export const useOrderItemSubmit = ({
       // Services/products recalculate the referral's pending referral_income —
       // refresh referrals so the pending amount stays in sync.
       void queryClient.invalidateQueries({ queryKey: queryKeys.referrals.all });
+      // Changing the quantity of a showcase line recalculates its stock.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.warehouse.all });
       // Broad invalidation (not just this order's detail) — adding/removing
       // an item changes the order's total sum, which the orders table also
       // displays, so the list cache needs refreshing too.

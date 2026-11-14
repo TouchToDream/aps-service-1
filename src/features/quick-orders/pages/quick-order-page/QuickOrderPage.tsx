@@ -14,6 +14,7 @@ import { useDeleteQuickOrder } from "@/features/quick-orders/hooks/useDeleteQuic
 import { useQuickOrder } from "@/features/quick-orders/hooks/useQuickOrder.ts";
 import { QUICK_ORDERS_LINKS } from "@/features/quick-orders/navigation.ts";
 import QuickOrderFinanceTab from "@/features/quick-orders/pages/quick-order-page/components/QuickOrderFinanceTab.tsx";
+import { WarehouseLineBadge } from "@/features/warehouse/components/WarehouseLineBadge.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
@@ -76,6 +77,12 @@ const QuickOrderPageContent = ({
             <Cog className="h-4 w-4 shrink-0 text-blue-500" />
           )}
           {row.name}
+          {row.type === "product" && (
+            <WarehouseLineBadge
+              warehouseItemId={row.warehouseItemId}
+              donorPartId={row.donorPartId}
+            />
+          )}
         </span>
       ),
     },

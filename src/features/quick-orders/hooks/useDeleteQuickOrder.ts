@@ -22,6 +22,8 @@ export const useDeleteQuickOrder = (
       onSuccess?.();
       void queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
       void queryClient.invalidateQueries({ queryKey: queryKeys.billing.all });
+      // Cancelling a quick sale returns its warehouse stock.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.warehouse.all });
       return queryClient.invalidateQueries({
         queryKey: queryKeys.quickOrders.all,
       });

@@ -97,6 +97,8 @@ export type OrderProduct = {
   price: string;
   purchasePrice: string | null;
   quantity: number;
+  warehouseItemId: number | null;
+  donorPartId: number | null;
   completedAt: string | null;
   createdAt: string;
   updatedAt: string;

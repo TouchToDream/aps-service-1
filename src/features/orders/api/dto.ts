@@ -103,6 +103,10 @@ export const OrderProductSchema = z.object({
   price: z.string(),
   purchase_price: z.string().nullable().optional(),
   quantity: z.number(),
+  // Set when the line was sold from the warehouse (showcase/supply item or a
+  // donor part); both null for a manual line.
+  warehouse_item_id: z.number().nullable().optional(),
+  donor_part_id: z.number().nullable().optional(),
   completed_at: z.iso.datetime().nullable(),
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),

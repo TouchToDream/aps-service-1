@@ -15,6 +15,7 @@ import AddQuickOrderItemModal from "@/features/quick-orders/components/AddQuickO
 import QuickOrderFormFields from "@/features/quick-orders/components/QuickOrderFormFields.tsx";
 import { useAddQuickOrder } from "@/features/quick-orders/hooks/useAddQuickOrder.ts";
 import { useQuickOrderFormDefaults } from "@/features/quick-orders/hooks/useQuickOrderFormDefaults.ts";
+import { useQuickOrderPrefill } from "@/features/quick-orders/hooks/useQuickOrderPrefill.ts";
 import {
   type NewQuickOrderFormValues,
   type NewQuickOrderItemSchema,
@@ -22,6 +23,7 @@ import {
   newQuickOrderSchema,
 } from "@/features/quick-orders/lib/schema.ts";
 import { type QuickOrderItemType } from "@/features/quick-orders/types.ts";
+import { WarehouseLineBadge } from "@/features/warehouse/components/WarehouseLineBadge.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Card, CardContent } from "@/shared/components/ui/card";
 
@@ -45,6 +47,7 @@ const CreateQuickOrderPage = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [modalState, setModalState] = useState<ModalState>(null);
+  const prefill = useQuickOrderPrefill();
 
   const methods = useForm<
     NewQuickOrderFormValues,
@@ -54,12 +57,14 @@ const CreateQuickOrderPage = () => {
     resolver: zodResolver(newQuickOrderSchema()),
     defaultValues: {
       managerId: user?.id,
+      locationId: prefill.locationId,
       services: [],
-      products: [],
+      products: prefill.products,
     },
   });
 
   const { control, formState } = methods;
+  const locationId = methods.watch("locationId");
   const servicesArray = useFieldArray({ control, name: "services" });
   const productsArray = useFieldArray({ control, name: "products" });
 
@@ -108,6 +113,10 @@ const CreateQuickOrderPage = () => {
             <Cog className="h-4 w-4 shrink-0 text-blue-500" />
           )}
           {row.name}
+          <WarehouseLineBadge
+            warehouseItemId={row.warehouseItemId}
+            donorPartId={row.donorPartId}
+          />
         </span>
       ),
     },
@@ -234,6 +243,7 @@ const CreateQuickOrderPage = () => {
       {modalState && (
         <AddQuickOrderItemModal
           type={modalState.type}
+          locationId={locationId ?? null}
           open
           onClose={() => setModalState(null)}
           onSave={handleSaveItem}

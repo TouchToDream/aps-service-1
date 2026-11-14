@@ -10,7 +10,9 @@ import type {
   NewQuickOrderSchema,
 } from "@/features/quick-orders/lib/schema.ts";
 import { QUICK_ORDERS_LINKS } from "@/features/quick-orders/navigation.ts";
+import { getWarehouseSourceErrorMessage } from "@/features/warehouse/lib/service.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
+import type { ValidationError } from "@/shared/api/types.ts";
 import { handleFormError } from "@/shared/lib/errors/handleFormError.ts";
 import { isApiError, notifyError } from "@/shared/lib/errors/services.ts";
 
@@ -35,13 +37,23 @@ export const useAddQuickOrder = (
       navigate(QUICK_ORDERS_LINKS.root());
       void queryClient.invalidateQueries({ queryKey: queryKeys.auth.user() });
       void queryClient.invalidateQueries({ queryKey: queryKeys.billing.all });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.warehouse.all });
       return queryClient.invalidateQueries({
         queryKey: queryKeys.quickOrders.all,
       });
     },
     onError: (error) => {
-      if (isApiError(error) && error.status === 422) {
+      if (isApiError<ValidationError>(error) && error.status === 422) {
         handleFormError(error, setError);
+        // Line-level warehouse errors (e.g. a donor part already used) have no
+        // field on this form — surface them and refresh the picker.
+        const sourceError = getWarehouseSourceErrorMessage(error.data?.errors);
+        if (sourceError) {
+          toast.error(sourceError);
+          void queryClient.invalidateQueries({
+            queryKey: queryKeys.warehouse.searchAll(),
+          });
+        }
       } else {
         notifyError(error);
       }

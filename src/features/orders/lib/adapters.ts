@@ -150,6 +150,8 @@ export function mapOrderProductDtoToOrderProduct(
     price: dto.price,
     purchasePrice: dto.purchase_price ?? null,
     quantity: dto.quantity,
+    warehouseItemId: dto.warehouse_item_id ?? null,
+    donorPartId: dto.donor_part_id ?? null,
     completedAt: dto.completed_at,
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
@@ -303,6 +305,24 @@ export function mapNewOrderToDto(order: NewOrder) {
 }
 
 export function mapNewProductToDto(product: NewOrderProduct) {
+  // A warehouse line takes its name and purchase price from the card — the
+  // backend ignores client values, so they are not sent at all.
+  if (product.warehouseItemId !== null) {
+    return {
+      warehouse_item_id: product.warehouseItemId,
+      price: product.price,
+      quantity: product.quantity,
+      manager_id: product.managerId,
+    };
+  }
+  if (product.donorPartId !== null) {
+    return {
+      donor_part_id: product.donorPartId,
+      price: product.price,
+      quantity: product.quantity,
+      manager_id: product.managerId,
+    };
+  }
   return {
     name: product.name,
     price: product.price,

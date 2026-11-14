@@ -115,7 +115,8 @@
       "locations": "Локації",
       "bank_cards": "Банківські картки",
       "price_list": "Прайс-лист"
-    }
+    },
+    "warehouse": "Склад"
   },
   "errors": {
     "unknown": "Невідома помилка",
@@ -242,7 +243,12 @@
     "finance": "Фінанси",
     "withdrawalRequests": "Запити на виплату",
     "integrations": "Інтеграції",
-    "quickOrders": "Продажі"
+    "quickOrders": "Продажі",
+    "warehouse": "Склад",
+    "showcase": "Вітрина",
+    "supplies": "Розхідники",
+    "donors": "Донори",
+    "parts": "Запчастини"
   },
   "profile": {
     "settings": "Налаштування профілю",
@@ -267,7 +273,8 @@
         "quick_orders": "Продажі",
         "referrals": "Реферали",
         "statistics": "Статистика",
-        "banking": "Банкінг"
+        "banking": "Банкінг",
+        "warehouse": "Склад"
       },
       "orders_view": "Перегляд",
       "orders_manage": "Управління",
@@ -290,7 +297,8 @@
       "dictionaries_locations_manage": "Локації (ред.)",
       "dictionaries_price_list_manage": "Прайс-лист (ред.)",
       "statistics_view": "Перегляд",
-      "banking_view": "Перегляд"
+      "banking_view": "Перегляд",
+      "warehouse_manage": "Управління"
     },
     "master_rate": "Ставка співробітника",
     "services_percent": "Відсоток за послуги",
@@ -1246,6 +1254,218 @@
       "paid_out": "Виплачено",
       "balance": "Баланс (заявка+рахунок)",
       "available": "Доступно (рахунок)"
+    }
+  },
+  "warehouse": {
+    "tabs": {
+      "showcase": "Вітрина",
+      "supplies": "Розхідники",
+      "donors": "Донори"
+    },
+    "donorsView": {
+      "donors": "Донори",
+      "parts": "Запчастини"
+    },
+    "kinds": {
+      "showcase": "Вітрина",
+      "supply": "Розхідник"
+    },
+    "sources": {
+      "showcase": "Вітрина",
+      "supply": "Розхідник",
+      "donor_part": "Донор"
+    },
+    "units": {
+      "piece": "шт",
+      "ml": "мл",
+      "g": "г",
+      "pack": "уп"
+    },
+    "reasons": {
+      "purchase": "Прихід",
+      "sale": "Продаж",
+      "order": "Замовлення",
+      "writeoff": "Списання",
+      "correction": "Коригування",
+      "return": "Повернення"
+    },
+    "donorStatuses": {
+      "available": "Доступний",
+      "disassembling": "Розбирається",
+      "given_to_customer": "Видано клієнту",
+      "disposed": "Списаний"
+    },
+    "partConditions": {
+      "alive": "Робоча",
+      "unknown": "Не перевірена",
+      "dead": "Неробоча"
+    },
+    "partStatuses": {
+      "available": "Доступна",
+      "used": "Використана",
+      "sold": "Продана",
+      "disposed": "Списана"
+    },
+    "noLocation": "без офісу",
+    "noCategory": "Без категорії",
+    "filters": {
+      "allCategories": "Усі категорії",
+      "allLocations": "Усі офіси",
+      "allStatuses": "Усі статуси",
+      "allConditions": "Будь-який стан",
+      "lowStock": "Треба докупити",
+      "clear": "Скинути фільтр"
+    },
+    "table": {
+      "id": "№",
+      "photo": "Фото",
+      "name": "Назва",
+      "category": "Категорія",
+      "price": "Ціна",
+      "purchasePrice": "Закупка",
+      "quantity": "Залишок",
+      "storagePlace": "Де лежить",
+      "device": "Пристрій",
+      "status": "Статус",
+      "location": "Офіс",
+      "partsCount": "Запчастин",
+      "condition": "Стан",
+      "donor": "Донор"
+    },
+    "item": {
+      "create": "Нова позиція",
+      "edit": "Редагувати позицію",
+      "fields": {
+        "category": "Категорія",
+        "name": "Назва",
+        "price": "Ціна продажу",
+        "purchasePrice": "Закупка",
+        "supplier": "Постачальник",
+        "orderUrl": "Посилання «Докупити»",
+        "unit": "Одиниця",
+        "minQuantity": "Мінімальний залишок",
+        "storagePlace": "Місце зберігання"
+      },
+      "purchasePriceHint": "Заповніть закупку — інакше маржа й комісія майстра рахуватимуться від повної ціни",
+      "successCreate": "Позицію створено",
+      "successUpdate": "Позицію оновлено",
+      "deleteTitle": "Видалити позицію?",
+      "deleteDescription": "Позиція зникне зі складу. Історія замовлень не зміниться.",
+      "stocks": "Залишки по офісах",
+      "noStocks": "Залишків поки немає",
+      "total": "Усього",
+      "movements": "Історія рухів",
+      "noMovements": "Рухів поки немає",
+      "buyMore": "Докупити",
+      "sell": "Продати",
+      "lowStock": "Нижче мінімуму",
+      "notFound": "Позицію не знайдено"
+    },
+    "photo": {
+      "upload": "Завантажити фото",
+      "replace": "Замінити фото",
+      "success": "Фото оновлено"
+    },
+    "stock": {
+      "title": "Рух залишку",
+      "purchase": "Прихід",
+      "writeoff": "Списати",
+      "correction": "Коригувати",
+      "location": "Офіс",
+      "quantity": "Кількість",
+      "correctionHint": "Зі знаком: +5 додасть, -2 прибере",
+      "note": "Коментар",
+      "nonZero": "Кількість не може бути 0",
+      "success": "Залишок оновлено",
+      "irreversible": "Рух не можна видалити — якщо помилились, зробіть зустрічний.",
+      "order": "Замовлення #{{id}}",
+      "quickOrder": "Продаж #{{id}}"
+    },
+    "donor": {
+      "create": "Новий донор",
+      "edit": "Редагувати донора",
+      "fields": {
+        "manufacturer": "Бренд",
+        "deviceType": "Тип пристрою",
+        "deviceModel": "Модель",
+        "sourceOrderId": "Замовлення-походження (ID)",
+        "supplier": "Постачальник",
+        "acquisitionCost": "Скільки віддали",
+        "status": "Статус",
+        "storagePlace": "Місце зберігання",
+        "location": "Офіс",
+        "note": "Коментар"
+      },
+      "statusLockedHint": "Донора видано клієнту — статус змінити не можна",
+      "disposeHint": "Під час списання донора його доступні запчастини теж буде списано",
+      "successCreate": "Донора створено",
+      "successUpdate": "Донора оновлено",
+      "deleteTitle": "Видалити донора?",
+      "deleteDescription": "Донора буде видалено зі складу.",
+      "parts": "Запчастини",
+      "noParts": "Запчастин поки немає",
+      "addPart": "Додати запчастину",
+      "sourceOrder": "Із замовлення",
+      "handedOverOrder": "Видано в замовленні",
+      "unnamed": "Донор #{{id}}"
+    },
+    "part": {
+      "create": "Нова запчастина",
+      "edit": "Редагувати запчастину",
+      "fields": {
+        "donor": "Донор",
+        "category": "Категорія",
+        "name": "Назва",
+        "namePlaceholder": "Якщо порожньо — покажемо назву категорії",
+        "condition": "Стан",
+        "status": "Статус",
+        "storagePlace": "Місце зберігання",
+        "location": "Офіс",
+        "note": "Коментар"
+      },
+      "successCreate": "Запчастину створено",
+      "successUpdate": "Запчастину оновлено",
+      "deleteTitle": "Видалити запчастину?",
+      "deleteDescription": "Запчастину буде видалено зі складу.",
+      "withoutDonor": "Без донора",
+      "usedInOrder": "У замовленні"
+    },
+    "picker": {
+      "warehouse": "Зі складу",
+      "manual": "Вручну",
+      "searchPlaceholder": "Назва або категорія",
+      "empty": "Нічого не знайдено",
+      "enterManually": "Вписати вручну",
+      "inStock": "Залишок",
+      "change": "Вибрати інше",
+      "partUnavailable": "Ця запчастина вже недоступна",
+      "partQuantityHint": "Запчастина донора завжди продається поштучно",
+      "readOnlyHint": "Назва й закупка беруться з картки складу"
+    },
+    "badges": {
+      "warehouse": "Склад",
+      "donor": "Донор"
+    },
+    "orderActions": {
+      "toDonor": "У донори",
+      "toDonorTitle": "Розібрати пристрій на запчастини",
+      "toDonorDescription": "З даних замовлення буде створено донора без запчастин.",
+      "noLocation": "Спершу вкажіть офіс замовлення",
+      "toDonorSuccess": "Донора створено",
+      "swap": "Свап",
+      "swapTitle": "Видати донора клієнту",
+      "swapDescription": "Клієнт отримує донора цілком замість ремонту. У замовлення додасться рядок з донором, а з пристрою клієнта буде створено нового донора.",
+      "swapDonor": "Якого донора видаємо",
+      "swapPrice": "Ціна в замовленні",
+      "swapStoragePlace": "Куди покласти нового донора",
+      "swapManager": "Виконавець",
+      "swapConfirm": "Видати",
+      "swapSuccess": "Донора видано клієнту"
+    },
+    "search": {
+      "items": "Пошук за назвою або категорією",
+      "donors": "Пошук за донором",
+      "parts": "Пошук за назвою або категорією"
     }
   }
 }
