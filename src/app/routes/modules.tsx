@@ -86,6 +86,9 @@ const BankCardsPage = lazy(
 const PriceListPage = lazy(
   () => import("@/features/dictionaries/pages/price-list"),
 );
+const WarehouseCategoriesPage = lazy(
+  () => import("@/features/dictionaries/pages/WarehouseCategories.tsx"),
+);
 const WorksPage = lazy(() => import("@/features/works/pages"));
 const WorkCreatePage = lazy(
   () => import("@/features/works/pages/WorkCreatePage"),
@@ -288,6 +291,10 @@ export const modulesRoutes: RouteObject = {
     {
       path: DICTIONARIES_ROUTES.priceList,
       element: <PriceListPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.warehouseCategories,
+      element: <WarehouseCategoriesPage />,
     },
     {
       element: <ProtectedRoute requiredAbility={ABILITIES.REFERRALS_MANAGE} />,

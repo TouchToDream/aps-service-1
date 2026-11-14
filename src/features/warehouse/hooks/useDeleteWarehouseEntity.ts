@@ -13,13 +13,14 @@ type UseDeleteWarehouseEntityReturn = {
 export const useDeleteWarehouseEntity = (
   deleteFn: (id: number) => Promise<void>,
   onSuccess?: () => void,
+  successMessageKey = "common.deleteDialog.success",
 ): UseDeleteWarehouseEntityReturn => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: deleteFn,
     onSuccess: () => {
-      toast.success(i18next.t("common.deleteDialog.success"));
+      toast.success(i18next.t(successMessageKey));
       onSuccess?.();
       return queryClient.invalidateQueries({
         queryKey: queryKeys.warehouse.all,

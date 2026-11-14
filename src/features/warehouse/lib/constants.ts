@@ -14,11 +14,7 @@ export const WAREHOUSE_PHOTO_COMPRESSION = {
 export const WAREHOUSE_SEARCH_LIMIT = 50;
 
 /** URL filter keys each warehouse table forwards to its list endpoint. */
-export const ITEMS_FILTER_KEYS = [
-  "category_id",
-  "location_id",
-  "low_stock",
-] as const;
+export const ITEMS_FILTER_KEYS = ["category_id", "location_id"] as const;
 
 export const DONORS_FILTER_KEYS = ["status", "location_id"] as const;
 

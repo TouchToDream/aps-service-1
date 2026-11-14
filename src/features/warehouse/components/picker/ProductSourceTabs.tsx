@@ -9,7 +9,10 @@ interface ProductSourceTabsProps {
   onChange: (tab: ProductSourceTab) => void;
 }
 
-/** "+ product": the warehouse picker is the default, manual entry stays as is. */
+/**
+ * "+ product": manual entry stays the default flow (ordering a part from a
+ * supplier for a specific customer); the warehouse complements it.
+ */
 export const ProductSourceTabs = ({
   value,
   onChange,
@@ -21,8 +24,8 @@ export const ProductSourceTabs = ({
       value={value}
       onChange={onChange}
       options={[
-        { value: "warehouse", label: t("warehouse.picker.warehouse") },
         { value: "manual", label: t("warehouse.picker.manual") },
+        { value: "warehouse", label: t("warehouse.picker.warehouse") },
       ]}
     />
   );

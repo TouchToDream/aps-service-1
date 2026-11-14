@@ -9,6 +9,7 @@ import {
   StoragePlaceResponseDtoSchema,
   StoragePlacesDtoSchema,
   WarehouseCategoriesDtoSchema,
+  WarehouseCategoryResponseDtoSchema,
   type WarehouseItemDetailDto,
   WarehouseItemDetailDtoSchema,
   WarehouseSearchDtoSchema,
@@ -302,6 +303,39 @@ export const warehouseApi = {
     const response = await get(`${WAREHOUSE_API.categories()}${query}`);
     const dto = parseDto(WarehouseCategoriesDtoSchema, response);
     return dto.data.map(mapWarehouseCategoryDto);
+  },
+
+  /** Find-or-create: an existing name of the same kind is returned as is. */
+  createCategory: async (
+    name: string,
+    kind: WarehouseCategoryKind,
+  ): Promise<WarehouseCategory> => {
+    const payload = { name, kind };
+    const response = await post<typeof payload, unknown>(
+      WAREHOUSE_API.categories(),
+      payload,
+    );
+    const dto = parseDto(WarehouseCategoryResponseDtoSchema, response);
+    return mapWarehouseCategoryDto(dto.data);
+  },
+
+  /** Rename only — the kind never changes. */
+  renameCategory: async (
+    id: number,
+    name: string,
+  ): Promise<WarehouseCategory> => {
+    const payload = { name };
+    const response = await put<typeof payload, unknown>(
+      WAREHOUSE_API.category(id),
+      payload,
+    );
+    const dto = parseDto(WarehouseCategoryResponseDtoSchema, response);
+    return mapWarehouseCategoryDto(dto.data);
+  },
+
+  /** 422 `category_in_use` when any item or part still uses it. */
+  deleteCategory: async (id: number): Promise<void> => {
+    await del<void>(WAREHOUSE_API.category(id));
   },
 
   getStoragePlaces: async (): Promise<StoragePlace[]> => {

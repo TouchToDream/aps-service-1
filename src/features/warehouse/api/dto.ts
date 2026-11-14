@@ -30,6 +30,10 @@ export const WarehouseCategoryDtoSchema = z.object({
 });
 export type WarehouseCategoryDto = z.infer<typeof WarehouseCategoryDtoSchema>;
 
+export const WarehouseCategoryResponseDtoSchema = z.object({
+  data: WarehouseCategoryDtoSchema,
+});
+
 export const WarehouseCategoriesDtoSchema = z.object({
   data: z.array(WarehouseCategoryDtoSchema),
 });
@@ -52,7 +56,8 @@ export const StoragePlacesDtoSchema = z.object({
 // ── Items ───────────────────────────────────────────────────────────────────
 
 export const WarehouseStockDtoSchema = z.object({
-  id: z.number(),
+  // null for an office where the item was never stocked (quantity 0).
+  id: z.number().nullable(),
   location_id: z.number(),
   location: LocationDtoSchema,
   quantity: z.number(),
@@ -83,8 +88,6 @@ export const WarehouseItemDtoSchema = z.object({
   supplier: SupplierDtoSchema.nullable(),
   order_url: z.string().nullable(),
   unit: zodEnumFromConst(WAREHOUSE_UNITS),
-  min_quantity: z.number().nullable(),
-  storage_place: StoragePlaceDtoSchema.nullable(),
   photo_url: z.string().nullable(),
   stocks: z.array(WarehouseStockDtoSchema),
   total_quantity: z.number(),

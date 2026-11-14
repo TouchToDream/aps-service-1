@@ -28,8 +28,6 @@ export const warehouseItemSchema = () =>
           message: i18next.t("validation.url_invalid"),
         }),
       unit: zodEnumFromConst(WAREHOUSE_UNITS),
-      minQuantity: optionalDigitsField(),
-      storagePlace: dictionaryRefField(),
     })
     .superRefine((values, ctx) => {
       if (!isDictionaryRefFilled(values.category)) {

@@ -12,6 +12,7 @@ import {
   Smartphone,
   Stethoscope,
   StickyNote,
+  Tags,
   Users,
   Wrench,
 } from "lucide-react";
@@ -100,6 +101,11 @@ const DictionariesPage = () => {
       title: t("sidebar.dictionaries_list.price_list"),
       icon: Receipt,
       href: DICTIONARIES_LINKS.priceList(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.warehouse_categories"),
+      icon: Tags,
+      href: DICTIONARIES_LINKS.warehouseCategories(),
     },
   ];
 

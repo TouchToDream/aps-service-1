@@ -1,7 +1,6 @@
 import { Controller, FormProvider } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { DonorStatusField } from "@/features/warehouse/components/donor-form/DonorStatusField.tsx";
 import { LocationSelectField } from "@/features/warehouse/components/LocationSelectField.tsx";
 import { StoragePlaceField } from "@/features/warehouse/components/StoragePlaceField.tsx";
 import { useDonorForm } from "@/features/warehouse/hooks/useDonorForm.ts";
@@ -98,17 +97,6 @@ export const DonorFormDialog = ({
                 />
               </div>
             </div>
-            <Controller
-              name="status"
-              control={control}
-              render={({ field }) => (
-                <DonorStatusField
-                  savedStatus={donor?.status ?? null}
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
             <Controller
               name="locationId"
               control={control}

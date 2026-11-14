@@ -52,7 +52,6 @@ export function mapStoragePlaceDto(dto: StoragePlaceDto): StoragePlace {
 
 function mapWarehouseStockDto(dto: WarehouseStockDto): WarehouseStock {
   return {
-    id: dto.id,
     locationId: dto.location_id,
     location: mapLocationDtoToLocation(dto.location),
     quantity: dto.quantity,
@@ -85,10 +84,6 @@ export function mapWarehouseItemDto(dto: WarehouseItemDto): WarehouseItem {
     supplier: dto.supplier ? mapSupplierDtoToSupplier(dto.supplier) : null,
     orderUrl: dto.order_url,
     unit: dto.unit,
-    minQuantity: dto.min_quantity,
-    storagePlace: dto.storage_place
-      ? mapStoragePlaceDto(dto.storage_place)
-      : null,
     photoUrl: dto.photo_url,
     stocks: dto.stocks.map(mapWarehouseStockDto),
     totalQuantity: dto.total_quantity,
@@ -235,9 +230,6 @@ export function mapNewWarehouseItemToDto(item: NewWarehouseItem) {
     supplier_name: item.supplierName || null,
     order_url: item.orderUrl || null,
     unit: item.unit,
-    min_quantity: item.minQuantity,
-    storage_place_id: item.storagePlace.id,
-    storage_place_name: getNewRefName(item.storagePlace),
   };
 }
 
@@ -258,7 +250,6 @@ export function mapNewDonorToDto(donor: NewDonor) {
     source_order_id: donor.sourceOrderId,
     supplier_id: donor.supplierId,
     acquisition_cost: donor.acquisitionCost || null,
-    ...(donor.status ? { status: donor.status } : {}),
     storage_place_id: donor.storagePlace.id,
     storage_place_name: getNewRefName(donor.storagePlace),
     location_id: donor.locationId,

@@ -4,10 +4,8 @@ import type { DonorPartSchema } from "@/features/warehouse/lib/part.schema.ts";
 import {
   type DictionaryRef,
   type Donor,
-  DONOR_STATUSES,
   type DonorPart,
   type DonorShort,
-  type DonorStatus,
   MANUAL_STOCK_REASONS,
   type ManualStockReason,
   type NewDonor,
@@ -15,15 +13,18 @@ import {
   type NewWarehouseItem,
   PART_CONDITIONS,
   PART_STATUSES,
+  WAREHOUSE_CATEGORY_KINDS,
   WAREHOUSE_ITEM_KINDS,
   WAREHOUSE_SOURCES,
   WAREHOUSE_UNITS,
+  type WarehouseCategoryKind,
   type WarehouseItem,
   type WarehouseItemKind,
   type WarehouseLineSource,
   type WarehouseSearchResult,
 } from "@/features/warehouse/types.ts";
 import { assertNever } from "@/shared/lib/assertNever.ts";
+import type { PaginatedResponse } from "@/widgets/table/models/types.ts";
 
 const EMPTY_REF: DictionaryRef = { id: null, name: "" };
 
@@ -61,10 +62,6 @@ export function getPartDisplayName(part: DonorPart): string {
   return part.name || part.category.name;
 }
 
-export function isBelowMinimum(item: WarehouseItem): boolean {
-  return item.minQuantity !== null && item.totalQuantity < item.minQuantity;
-}
-
 /**
  * Purchase and write-off are entered as a positive amount and get their sign
  * from the action; a correction is entered already signed (+5 / -2).
@@ -83,18 +80,6 @@ export function getSignedStockQuantity(
     default:
       return assertNever(reason);
   }
-}
-
-/** Only a donor that already reached `given_to_customer` may show that status. */
-export function getSelectableDonorStatuses(
-  current: DonorStatus | null,
-): DonorStatus[] {
-  if (current === DONOR_STATUSES.GIVEN_TO_CUSTOMER) {
-    return [DONOR_STATUSES.GIVEN_TO_CUSTOMER];
-  }
-  return Object.values(DONOR_STATUSES).filter(
-    (status) => status !== DONOR_STATUSES.GIVEN_TO_CUSTOMER,
-  );
 }
 
 export function getWarehouseLineSource(
@@ -127,8 +112,6 @@ export function getWarehouseItemFormDefaults(
       supplierName: "",
       orderUrl: "",
       unit: WAREHOUSE_UNITS.PIECE,
-      minQuantity: "",
-      storagePlace: EMPTY_REF,
     };
   }
   return {
@@ -140,8 +123,6 @@ export function getWarehouseItemFormDefaults(
     supplierName: item.supplier?.name ?? "",
     orderUrl: item.orderUrl ?? "",
     unit: item.unit,
-    minQuantity: item.minQuantity === null ? "" : String(item.minQuantity),
-    storagePlace: toRef(item.storagePlace),
   };
 }
 
@@ -157,8 +138,6 @@ export function mapWarehouseItemFormToNewItem(
     supplierName: values.supplierName,
     orderUrl: values.orderUrl,
     unit: values.unit,
-    minQuantity: toOptionalNumber(values.minQuantity),
-    storagePlace: values.storagePlace,
   };
 }
 
@@ -179,7 +158,6 @@ export function getDonorFormDefaults(
       deviceModel: "",
       sourceOrderId: "",
       acquisitionCost: "",
-      status: DONOR_STATUSES.AVAILABLE,
       storagePlace: EMPTY_REF,
       locationId: defaultLocationId ?? undefined,
       note: "",
@@ -192,7 +170,6 @@ export function getDonorFormDefaults(
     sourceOrderId:
       donor.sourceOrderId === null ? "" : String(donor.sourceOrderId),
     acquisitionCost: donor.acquisitionCost ?? "",
-    status: donor.status,
     storagePlace: toRef(donor.storagePlace),
     locationId: donor.location?.id ?? defaultLocationId ?? undefined,
     note: donor.note ?? "",
@@ -201,13 +178,13 @@ export function getDonorFormDefaults(
 
 /**
  * PUT replaces every field, so the form always sends the whole card. The
- * status is the exception: it is sent only when the user actually changed it.
+ * status is not part of it: it changes only through actions (swap → given to
+ * customer, delete → disposed).
  */
 export function mapDonorFormToNewDonor(
   values: DonorSchema,
   donor?: Donor,
 ): NewDonor {
-  const statusChanged = !donor || donor.status !== values.status;
   return {
     manufacturer: values.manufacturer,
     deviceType: values.deviceType,
@@ -215,7 +192,6 @@ export function mapDonorFormToNewDonor(
     sourceOrderId: toOptionalNumber(values.sourceOrderId),
     supplierId: donor?.supplier?.id ?? null,
     acquisitionCost: values.acquisitionCost,
-    status: statusChanged ? values.status : undefined,
     storagePlace: values.storagePlace,
     locationId: values.locationId,
     note: values.note,
@@ -285,4 +261,26 @@ export function getWarehouseSourceErrorMessage(
     .filter(([key]) => SOURCE_ERROR_KEY.test(key))
     .flatMap(([, list]) => list);
   return messages.length ? messages.join(" ") : null;
+}
+
+// ── Categories ──────────────────────────────────────────────────────────────
+
+/** Categories come unpaginated — present them to the table as a single page. */
+export function toSinglePageResponse<T extends { id: number }>(
+  items: T[],
+): PaginatedResponse<T> {
+  return {
+    items,
+    meta: { currentPage: 1, lastPage: 1, total: items.length },
+  };
+}
+
+/** `?kind=` from the URL, falling back to showcase for a missing/unknown value. */
+export function parseCategoryKind(
+  value: string | undefined,
+): WarehouseCategoryKind {
+  return (
+    Object.values(WAREHOUSE_CATEGORY_KINDS).find((kind) => kind === value) ??
+    WAREHOUSE_CATEGORY_KINDS.SHOWCASE
+  );
 }

@@ -12,31 +12,34 @@ describe("mapNewWarehouseItemToDto", () => {
     supplierName: "",
     orderUrl: "",
     unit: "piece" as const,
-    minQuantity: null,
   };
 
-  it("sends the id of a picked dictionary entry and no name", () => {
+  it("sends the id of a picked category and no name", () => {
     const dto = mapNewWarehouseItemToDto({
       ...base,
       category: { id: 7, name: "Павербанк" },
-      storagePlace: { id: 2, name: "Полиця А1" },
     });
     expect(dto.category_id).toBe(7);
     expect(dto.category_name).toBeNull();
-    expect(dto.storage_place_id).toBe(2);
-    expect(dto.storage_place_name).toBeNull();
     expect(dto.purchase_price).toBeNull();
   });
 
-  it("sends a typed name to be created on the fly", () => {
+  it("sends a typed category name to be created on the fly", () => {
     const dto = mapNewWarehouseItemToDto({
       ...base,
       category: { id: null, name: "  Павербанк " },
-      storagePlace: { id: null, name: "" },
     });
     expect(dto.category_id).toBeNull();
     expect(dto.category_name).toBe("Павербанк");
-    expect(dto.storage_place_name).toBeNull();
+  });
+
+  it("no longer sends storage place or minimum quantity", () => {
+    const dto = mapNewWarehouseItemToDto({
+      ...base,
+      category: { id: 7, name: "Павербанк" },
+    });
+    expect(dto).not.toHaveProperty("storage_place_id");
+    expect(dto).not.toHaveProperty("min_quantity");
   });
 });
 

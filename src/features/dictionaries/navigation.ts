@@ -17,4 +17,5 @@ export const DICTIONARIES_LINKS = {
   locations: () => `${BASE}/locations`,
   bankCards: () => `${BASE}/bank-cards`,
   priceList: () => `${BASE}/price-list`,
+  warehouseCategories: () => `${BASE}/warehouse-categories`,
 } as const;

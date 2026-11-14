@@ -29,9 +29,6 @@ const FIELD_MAP = {
   purchase_price: "purchasePrice",
   supplier_name: "supplierName",
   order_url: "orderUrl",
-  min_quantity: "minQuantity",
-  storage_place_id: "storagePlace",
-  storage_place_name: "storagePlace",
 } as const;
 
 type UseWarehouseItemFormParams = {

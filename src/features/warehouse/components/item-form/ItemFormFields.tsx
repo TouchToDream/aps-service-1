@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { suppliersApi } from "@/features/dictionaries/api";
 import { createNameSearchFetcher } from "@/features/orders/lib/searchFetchers.ts";
 import { DictionaryRefField } from "@/features/warehouse/components/DictionaryRefField.tsx";
-import { StoragePlaceField } from "@/features/warehouse/components/StoragePlaceField.tsx";
 import type {
   WarehouseItemFormValues,
   WarehouseItemSchema,
@@ -132,50 +131,27 @@ export const ItemFormFields = ({ kind }: ItemFormFieldsProps) => {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1">
-          <Label>{t("warehouse.item.fields.unit")}</Label>
-          <Controller
-            name="unit"
-            control={control}
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.values(WAREHOUSE_UNITS).map((unit) => (
-                    <SelectItem key={unit} value={unit}>
-                      {t(`warehouse.units.${unit}`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <Label>{t("warehouse.item.fields.minQuantity")}</Label>
-          <FormField
-            error={errors.minQuantity}
-            {...digitsOnly}
-            {...register("minQuantity")}
-          />
-        </div>
+      <div className="flex flex-col gap-1">
+        <Label>{t("warehouse.item.fields.unit")}</Label>
+        <Controller
+          name="unit"
+          control={control}
+          render={({ field }) => (
+            <Select value={field.value} onValueChange={field.onChange}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(WAREHOUSE_UNITS).map((unit) => (
+                  <SelectItem key={unit} value={unit}>
+                    {t(`warehouse.units.${unit}`)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
       </div>
-
-      <Controller
-        name="storagePlace"
-        control={control}
-        render={({ field }) => (
-          <StoragePlaceField
-            label={t("warehouse.item.fields.storagePlace")}
-            value={field.value}
-            onChange={field.onChange}
-            error={errors.storagePlace?.message}
-          />
-        )}
-      />
     </div>
   );
 };

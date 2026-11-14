@@ -6,7 +6,6 @@ import {
   type InfoTableColumn,
 } from "@/features/orders/components/info-table/InfoTable.tsx";
 import { StockQuantity } from "@/features/warehouse/components/StockQuantity.tsx";
-import { isBelowMinimum } from "@/features/warehouse/lib/service.ts";
 import {
   MANUAL_STOCK_REASONS,
   type ManualStockReason,
@@ -15,6 +14,9 @@ import {
 } from "@/features/warehouse/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
 import { Card, CardContent } from "@/shared/components/ui/card.tsx";
+
+/** InfoTable needs an id; a never-stocked office has none, so key by office. */
+type StockRow = WarehouseStock & { id: number };
 
 interface ItemStocksCardProps {
   item: WarehouseItemDetail;
@@ -33,7 +35,13 @@ export const ItemStocksCard = ({
 }: ItemStocksCardProps) => {
   const { t } = useTranslation();
 
-  const columns: InfoTableColumn<WarehouseStock>[] = [
+  // Every office comes from the backend, zeros included — render them all.
+  const rows: StockRow[] = item.stocks.map((stock) => ({
+    ...stock,
+    id: stock.locationId,
+  }));
+
+  const columns: InfoTableColumn<StockRow>[] = [
     {
       key: "location",
       label: t("warehouse.table.location"),
@@ -49,7 +57,7 @@ export const ItemStocksCard = ({
           {
             key: "sell",
             label: "",
-            render: (row: WarehouseStock) => (
+            render: (row: StockRow) => (
               <Button
                 type="button"
                 variant="outline"
@@ -88,21 +96,10 @@ export const ItemStocksCard = ({
             </div>
           )}
         </div>
-        {item.stocks.length ? (
-          <InfoTable columns={columns} data={item.stocks} />
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            {t("warehouse.item.noStocks")}
-          </p>
-        )}
+        <InfoTable columns={columns} data={rows} />
         <p className="text-sm text-muted-foreground">
           {t("warehouse.item.total")}:{" "}
           <StockQuantity quantity={item.totalQuantity} className="text-base" />
-          {isBelowMinimum(item) && (
-            <span className="ml-2 font-medium text-destructive">
-              {t("warehouse.item.lowStock")}
-            </span>
-          )}
         </p>
       </CardContent>
     </Card>

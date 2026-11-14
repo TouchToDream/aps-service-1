@@ -60,12 +60,6 @@ export const ItemInfoCard = ({ item, canManage }: ItemInfoCardProps) => {
           <InfoField label={t("warehouse.item.fields.unit")}>
             {t(`warehouse.units.${item.unit}`)}
           </InfoField>
-          <InfoField label={t("warehouse.item.fields.minQuantity")}>
-            {item.minQuantity}
-          </InfoField>
-          <InfoField label={t("warehouse.item.fields.storagePlace")}>
-            {item.storagePlace?.name}
-          </InfoField>
           {item.orderUrl && (
             <InfoField label={t("warehouse.item.fields.orderUrl")}>
               <a

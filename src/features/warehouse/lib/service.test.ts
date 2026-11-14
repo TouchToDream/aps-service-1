@@ -2,13 +2,11 @@ import { describe, expect, it } from "vitest";
 
 import {
   getDonorTitle,
-  getSelectableDonorStatuses,
   getSignedStockQuantity,
   getWarehouseLineSource,
   getWarehouseSourceErrorMessage,
   mapDonorFormToNewDonor,
 } from "@/features/warehouse/lib/service.ts";
-import type { Donor } from "@/features/warehouse/types.ts";
 
 describe("getSignedStockQuantity", () => {
   it("makes a purchase positive and a write-off negative", () => {
@@ -21,25 +19,6 @@ describe("getSignedStockQuantity", () => {
   it("keeps the sign of a correction as typed", () => {
     expect(getSignedStockQuantity("correction", 3)).toBe(3);
     expect(getSignedStockQuantity("correction", -3)).toBe(-3);
-  });
-});
-
-describe("getSelectableDonorStatuses", () => {
-  it("never offers 'given to customer' — that is reachable only via swap", () => {
-    expect(getSelectableDonorStatuses(null)).toEqual([
-      "available",
-      "disassembling",
-      "disposed",
-    ]);
-    expect(getSelectableDonorStatuses("available")).not.toContain(
-      "given_to_customer",
-    );
-  });
-
-  it("locks a donor that was already given to the customer", () => {
-    expect(getSelectableDonorStatuses("given_to_customer")).toEqual([
-      "given_to_customer",
-    ]);
   });
 });
 
@@ -103,31 +82,18 @@ describe("getDonorTitle", () => {
 });
 
 describe("mapDonorFormToNewDonor", () => {
-  const values = {
-    manufacturer: "Lenovo",
-    deviceType: "",
-    deviceModel: "IdeaPad 3",
-    sourceOrderId: "1234",
-    acquisitionCost: "",
-    status: "available" as const,
-    storagePlace: { id: 2, name: "Полиця А1" },
-    locationId: 1,
-    note: "",
-  };
-
-  it("sends the status for a new donor", () => {
-    expect(mapDonorFormToNewDonor(values).status).toBe("available");
-    expect(mapDonorFormToNewDonor(values).sourceOrderId).toBe(1234);
-  });
-
-  it("omits an unchanged status on update so the backend keeps it", () => {
-    const donor = { status: "available", supplier: null } as Pick<
-      Donor,
-      "status" | "supplier"
-    > as Donor;
-    expect(mapDonorFormToNewDonor(values, donor).status).toBeUndefined();
-    expect(
-      mapDonorFormToNewDonor({ ...values, status: "disposed" }, donor).status,
-    ).toBe("disposed");
+  it("never sends a status — it changes only through swap / delete", () => {
+    const dto = mapDonorFormToNewDonor({
+      manufacturer: "Lenovo",
+      deviceType: "",
+      deviceModel: "IdeaPad 3",
+      sourceOrderId: "1234",
+      acquisitionCost: "",
+      storagePlace: { id: 2, name: "Полиця А1" },
+      locationId: 1,
+      note: "",
+    });
+    expect(dto).not.toHaveProperty("status");
+    expect(dto.sourceOrderId).toBe(1234);
   });
 });

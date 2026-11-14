@@ -44,7 +44,7 @@ const AddQuickOrderItemModal = ({
 }: AddQuickOrderItemModalProps) => {
   const { t } = useTranslation();
   const isAddingProduct = type === "product" && !editItem;
-  const [source, setSource] = useState<ProductSourceTab>("warehouse");
+  const [source, setSource] = useState<ProductSourceTab>("manual");
   // A line sold from the warehouse keeps the card's name and purchase price.
   const isWarehouseLine =
     !!editItem &&

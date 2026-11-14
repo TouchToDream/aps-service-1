@@ -12,6 +12,7 @@ export const WAREHOUSE_API = {
   part: (id: number) => `${BASE}/parts/${id}`,
   partPhoto: (id: number) => `${BASE}/parts/${id}/photo`,
   categories: () => `${BASE}/categories`,
+  category: (id: number) => `${BASE}/categories/${id}`,
   storagePlaces: () => `${BASE}/storage-places`,
   search: () => `${BASE}/search`,
   orderToDonor: (orderId: number) => `/backoffice/orders/${orderId}/to-donor`,

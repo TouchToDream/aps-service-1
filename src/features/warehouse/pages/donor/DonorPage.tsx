@@ -1,10 +1,9 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { Archive, Pencil } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useAuth } from "@/features/auth/hooks/useAuth.ts";
-import { DeleteConfirmDialog } from "@/features/orders/components/info-table/DeleteConfirmDialog.tsx";
 import { warehouseApi } from "@/features/warehouse/api";
 import { DonorFormDialog } from "@/features/warehouse/components/donor-form/DonorFormDialog.tsx";
 import { DonorTitle } from "@/features/warehouse/components/DonorTitle.tsx";
@@ -21,10 +20,11 @@ import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
+import { DeleteConfirmDialog } from "@/widgets/table/components/dialogs";
 
 type DonorDialog =
   | { type: "edit" }
-  | { type: "delete" }
+  | { type: "dispose" }
   | { type: "part"; part?: DonorPart }
   | null;
 
@@ -39,10 +39,14 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
   const canManage = useCanManageWarehouse();
   const [dialog, setDialog] = useState<DonorDialog>(null);
   const { donor, isLoading, isError, error, refetch } = useDonor(donorId);
-  const { onDelete: deleteDonor } = useDeleteWarehouseEntity(
-    warehouseApi.deleteDonor,
-    () => navigate(WAREHOUSE_LINKS.donors()),
-  );
+  // DELETE means "write off": the donor and its available parts become
+  // disposed and the record is hidden; a swapped donor keeps its status.
+  const { onDelete: disposeDonor, isPending: isDisposing } =
+    useDeleteWarehouseEntity(
+      warehouseApi.deleteDonor,
+      () => navigate(WAREHOUSE_LINKS.donors()),
+      "warehouse.donor.disposeSuccess",
+    );
   const { onDelete: deletePart, isPending: isDeletingPart } =
     useDeleteWarehouseEntity(warehouseApi.deletePart);
   const defaultLocationId = donor?.location?.id ?? user?.location?.id ?? null;
@@ -78,10 +82,10 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
                   variant="outline"
                   size="sm"
                   className="text-destructive hover:text-destructive"
-                  onClick={() => setDialog({ type: "delete" })}
+                  onClick={() => setDialog({ type: "dispose" })}
                 >
-                  <Trash2 className="h-4 w-4" />
-                  {t("common.delete")}
+                  <Archive className="h-4 w-4" />
+                  {t("warehouse.donor.dispose")}
                 </Button>
               </div>
             )}
@@ -113,14 +117,15 @@ const DonorPageContent = ({ donorId }: DonorPageContentProps) => {
             />
           )}
           <DeleteConfirmDialog
-            open={dialog?.type === "delete"}
-            title={t("warehouse.donor.deleteTitle")}
-            description={t("warehouse.donor.deleteDescription")}
-            onCancel={() => setDialog(null)}
-            onConfirm={() => {
-              setDialog(null);
-              deleteDonor(donor.id);
-            }}
+            isOpen={dialog?.type === "dispose"}
+            onOpenChange={(open) => !open && setDialog(null)}
+            title={t("warehouse.donor.disposeTitle")}
+            description={t("warehouse.donor.disposeDescription")}
+            cancelLabel={t("common.cancel")}
+            confirmLabel={t("warehouse.donor.dispose")}
+            isPending={isDisposing}
+            // Stay open while pending — success navigates to the donors list.
+            onConfirm={() => disposeDonor(donor.id)}
           />
         </div>
       )}

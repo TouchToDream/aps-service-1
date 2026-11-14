@@ -6,8 +6,6 @@ import { useLocationFilterOptions } from "@/features/warehouse/hooks/useLocation
 import { useWarehouseCategories } from "@/features/warehouse/hooks/useWarehouseCategories.ts";
 import { ITEMS_FILTER_KEYS } from "@/features/warehouse/lib/constants.ts";
 import type { WarehouseItemKind } from "@/features/warehouse/types.ts";
-import { Checkbox } from "@/shared/components/ui/checkbox.tsx";
-import { useFilterParams } from "@/widgets/table/hooks/useFilterParams.ts";
 
 interface ItemsFilterBarProps {
   kind: WarehouseItemKind;
@@ -15,7 +13,6 @@ interface ItemsFilterBarProps {
 
 export const ItemsFilterBar = ({ kind }: ItemsFilterBarProps) => {
   const { t } = useTranslation();
-  const { filters, setFilter } = useFilterParams();
   const categories = useWarehouseCategories(kind);
   const locationOptions = useLocationFilterOptions();
 
@@ -34,15 +31,6 @@ export const ItemsFilterBar = ({ kind }: ItemsFilterBarProps) => {
         allLabel={t("warehouse.filters.allLocations")}
         options={locationOptions}
       />
-      <label className="flex cursor-pointer items-center gap-1.5 text-sm">
-        <Checkbox
-          checked={filters.low_stock === "1"}
-          onCheckedChange={(checked) =>
-            setFilter("low_stock", checked ? "1" : "")
-          }
-        />
-        {t("warehouse.filters.lowStock")}
-      </label>
       <ClearFiltersButton filterKeys={ITEMS_FILTER_KEYS} />
     </div>
   );

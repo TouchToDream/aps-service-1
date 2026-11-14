@@ -102,8 +102,8 @@ export type StoragePlace = {
 
 // ── Items (showcase / supplies) ─────────────────────────────────────────────
 
+/** One row per office — offices where the item was never stocked come as 0. */
 export type WarehouseStock = {
-  id: number;
   locationId: number;
   location: Location;
   quantity: number;
@@ -132,8 +132,6 @@ export type WarehouseItem = {
   supplier: Supplier | null;
   orderUrl: string | null;
   unit: WarehouseUnit;
-  minQuantity: number | null;
-  storagePlace: StoragePlace | null;
   photoUrl: string | null;
   stocks: WarehouseStock[];
   totalQuantity: number;
@@ -160,8 +158,6 @@ export type NewWarehouseItem = {
   supplierName: string;
   orderUrl: string;
   unit: WarehouseUnit;
-  minQuantity: number | null;
-  storagePlace: DictionaryRef;
 };
 
 export type NewStockMovement = {
@@ -219,8 +215,6 @@ export type NewDonor = {
   sourceOrderId: number | null;
   supplierId: number | null;
   acquisitionCost: string;
-  /** Omitted on PUT keeps the current status (see backend rules). */
-  status?: DonorStatus;
   storagePlace: DictionaryRef;
   locationId: number;
   note: string;

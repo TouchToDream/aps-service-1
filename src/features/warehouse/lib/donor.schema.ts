@@ -6,8 +6,6 @@ import {
   isDictionaryRefFilled,
   optionalDigitsField,
 } from "@/features/warehouse/lib/fieldSchemas.ts";
-import { DONOR_STATUSES } from "@/features/warehouse/types.ts";
-import { zodEnumFromConst } from "@/shared/lib/zod-helpers.ts";
 
 export const donorSchema = () =>
   z
@@ -17,7 +15,6 @@ export const donorSchema = () =>
       deviceModel: z.string().trim(),
       sourceOrderId: optionalDigitsField(),
       acquisitionCost: optionalDigitsField(),
-      status: zodEnumFromConst(DONOR_STATUSES),
       storagePlace: dictionaryRefField(),
       locationId: z
         .number({ error: i18next.t("validation.locationRequired") })

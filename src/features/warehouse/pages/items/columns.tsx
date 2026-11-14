@@ -1,13 +1,10 @@
 import { PhotoThumb } from "@/features/warehouse/components/PhotoThumb.tsx";
 import { StockQuantity } from "@/features/warehouse/components/StockQuantity.tsx";
-import { isBelowMinimum } from "@/features/warehouse/lib/service.ts";
 import type {
-  StoragePlace,
   WarehouseCategory,
   WarehouseItem,
 } from "@/features/warehouse/types.ts";
 import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
-import { cn } from "@/shared/lib/utils.ts";
 import { type ColumnConfig } from "@/widgets/table/models/types.ts";
 
 export function buildWarehouseItemColumns(): ColumnConfig<WarehouseItem>[] {
@@ -49,27 +46,8 @@ export function buildWarehouseItemColumns(): ColumnConfig<WarehouseItem>[] {
       labelKey: "warehouse.table.quantity",
       sortable: false,
       renderCell: (_value, item) => (
-        <span
-          className={cn(
-            "inline-flex items-center gap-1",
-            isBelowMinimum(item) && "rounded bg-destructive/10 px-1.5",
-          )}
-        >
-          <StockQuantity quantity={item.totalQuantity} />
-          {item.minQuantity !== null && (
-            <span className="text-xs text-muted-foreground">
-              / {item.minQuantity}
-            </span>
-          )}
-        </span>
+        <StockQuantity quantity={item.totalQuantity} />
       ),
-    },
-    {
-      key: "storagePlace",
-      field: "storagePlace",
-      labelKey: "warehouse.table.storagePlace",
-      sortable: false,
-      renderCell: (value) => (value as StoragePlace | null)?.name ?? "—",
     },
   ];
 }
