@@ -94,8 +94,6 @@ describe("mapNewDonorPartToDto", () => {
     const dto = mapNewDonorPartToDto({
       category: { id: 11, name: "Матриця" },
       name: "",
-      condition: "alive",
-      status: "available",
       storagePlace: { id: null, name: "Коробка 3" },
       locationId: 1,
       note: "",

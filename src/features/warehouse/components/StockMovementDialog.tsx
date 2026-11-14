@@ -95,20 +95,20 @@ export const StockMovementDialog = ({
                 </p>
               )}
             </div>
-            {/* Purchase asks only for the quantity. */}
-            {reason !== MANUAL_STOCK_REASONS.PURCHASE && (
-              <div className="flex flex-col gap-1">
-                <Label>
-                  {t("warehouse.stock.note")}
-                  {isCorrection && " *"}
-                </Label>
-                <FormField
-                  autoComplete="off"
-                  error={errors.note}
-                  {...register("note")}
-                />
-              </div>
-            )}
+            {/* Optional for purchase / write-off, required for correction. */}
+            <div className="flex flex-col gap-1">
+              <Label>
+                {t("warehouse.stock.note")}
+                {isCorrection && " *"}
+              </Label>
+              <FormField
+                autoComplete="off"
+                maxLength={500}
+                placeholder={t(`warehouse.stock.notePlaceholders.${reason}`)}
+                error={errors.note}
+                {...register("note")}
+              />
+            </div>
             {errors.root && (
               <p className="text-sm text-destructive">{errors.root.message}</p>
             )}

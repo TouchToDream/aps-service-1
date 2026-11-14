@@ -18,12 +18,7 @@ export const ITEMS_FILTER_KEYS = ["category_id", "location_id"] as const;
 
 export const DONORS_FILTER_KEYS = ["location_id"] as const;
 
-export const PARTS_FILTER_KEYS = [
-  "category_id",
-  "condition",
-  "status",
-  "location_id",
-] as const;
+export const PARTS_FILTER_KEYS = ["category_id", "location_id"] as const;
 
 /**
  * "+ product" dialog with the Manual / From warehouse tabs: one fixed width

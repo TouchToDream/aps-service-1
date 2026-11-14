@@ -1,8 +1,8 @@
 import i18next from "i18next";
 
 import { DonorTitle } from "@/features/warehouse/components/DonorTitle.tsx";
+import { PartAvailabilityBadge } from "@/features/warehouse/components/PartAvailabilityBadge.tsx";
 import { PhotoThumb } from "@/features/warehouse/components/PhotoThumb.tsx";
-import { PartStatusBadge } from "@/features/warehouse/components/StatusBadges.tsx";
 import { getPartDisplayName } from "@/features/warehouse/lib/service.ts";
 import type { DonorPart } from "@/features/warehouse/types.ts";
 import { type ColumnConfig } from "@/widgets/table/models/types.ts";
@@ -48,19 +48,11 @@ export function buildDonorPartColumns(): ColumnConfig<DonorPart>[] {
         ),
     },
     {
-      key: "condition",
-      field: "condition",
-      labelKey: "warehouse.table.condition",
+      key: "isAvailable",
+      field: "isAvailable",
+      labelKey: "warehouse.table.availability",
       sortable: false,
-      renderCell: (_value, part) =>
-        i18next.t(`warehouse.partConditions.${part.condition}`),
-    },
-    {
-      key: "status",
-      field: "status",
-      labelKey: "warehouse.table.status",
-      sortable: false,
-      renderCell: (_value, part) => <PartStatusBadge status={part.status} />,
+      renderCell: (_value, part) => <PartAvailabilityBadge part={part} />,
     },
     {
       key: "location",

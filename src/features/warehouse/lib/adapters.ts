@@ -146,15 +146,15 @@ export function mapDonorPartDto(dto: DonorPartDto): DonorPart {
     donor: dto.donor ? mapDonorShortDto(dto.donor) : null,
     category: mapWarehouseCategoryDto(dto.category),
     name: dto.name,
-    condition: dto.condition,
-    status: dto.status,
     storagePlace: dto.storage_place
       ? mapStoragePlaceDto(dto.storage_place)
       : null,
     location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
     note: dto.note,
     photoUrl: dto.photo_url,
+    isAvailable: dto.is_available,
     usedInOrderId: dto.used_in_order_id,
+    usedInQuickOrderId: dto.used_in_quick_order_id,
   };
 }
 
@@ -262,8 +262,6 @@ export function mapNewDonorPartToDto(part: NewDonorPart) {
     category_id: part.category.id,
     category_name: getNewRefName(part.category),
     name: part.name || null,
-    condition: part.condition,
-    status: part.status,
     storage_place_id: part.storagePlace.id,
     storage_place_name: getNewRefName(part.storagePlace),
     location_id: part.locationId,

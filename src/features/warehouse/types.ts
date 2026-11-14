@@ -47,22 +47,6 @@ export const MANUAL_STOCK_REASONS = {
 export type ManualStockReason =
   (typeof MANUAL_STOCK_REASONS)[keyof typeof MANUAL_STOCK_REASONS];
 
-export const PART_CONDITIONS = {
-  ALIVE: "alive",
-  UNKNOWN: "unknown",
-  DEAD: "dead",
-} as const;
-export type PartCondition =
-  (typeof PART_CONDITIONS)[keyof typeof PART_CONDITIONS];
-
-export const PART_STATUSES = {
-  AVAILABLE: "available",
-  USED: "used",
-  SOLD: "sold",
-  DISPOSED: "disposed",
-} as const;
-export type PartStatus = (typeof PART_STATUSES)[keyof typeof PART_STATUSES];
-
 export const WAREHOUSE_SOURCES = {
   SHOWCASE: "showcase",
   SUPPLY: "supply",
@@ -186,18 +170,23 @@ export type Donor = DonorShort & {
   partsCount: number;
 };
 
+/**
+ * No condition / status fields: the condition goes into the note, and the
+ * availability is derived by the backend — a part is free until an order or
+ * quick-order line holds it. Parts of a donor that left the workshop vanish.
+ */
 export type DonorPart = {
   id: number;
   donor: DonorShort | null;
   category: WarehouseCategory;
   name: string | null;
-  condition: PartCondition;
-  status: PartStatus;
   storagePlace: StoragePlace | null;
   location: Location | null;
   note: string | null;
   photoUrl: string | null;
+  isAvailable: boolean;
   usedInOrderId: number | null;
+  usedInQuickOrderId: number | null;
 };
 
 export type DonorDetail = Donor & {
@@ -222,8 +211,6 @@ export type NewDonor = {
 export type NewDonorPart = {
   category: DictionaryRef;
   name: string;
-  condition: PartCondition;
-  status: PartStatus;
   storagePlace: DictionaryRef;
   locationId: number;
   note: string;

@@ -4,8 +4,6 @@ import { LocationDtoSchema } from "@/entities/location/dto.ts";
 import { SupplierDtoSchema } from "@/features/dictionaries/api/dto.ts";
 import { UserDtoSchema } from "@/features/users/api/dto.ts";
 import {
-  PART_CONDITIONS,
-  PART_STATUSES,
   STOCK_MOVEMENT_REASONS,
   WAREHOUSE_CATEGORY_KINDS,
   WAREHOUSE_ITEM_KINDS,
@@ -138,13 +136,13 @@ export const DonorPartDtoSchema = z.object({
   donor: DonorShortDtoSchema.nullable(),
   category: WarehouseCategoryDtoSchema,
   name: z.string().nullable(),
-  condition: zodEnumFromConst(PART_CONDITIONS),
-  status: zodEnumFromConst(PART_STATUSES),
   storage_place: StoragePlaceDtoSchema.nullable(),
   location: LocationDtoSchema.nullable(),
   note: z.string().nullable(),
   photo_url: z.string().nullable(),
+  is_available: z.boolean(),
   used_in_order_id: z.number().nullable(),
+  used_in_quick_order_id: z.number().nullable(),
 });
 export type DonorPartDto = z.infer<typeof DonorPartDtoSchema>;
 

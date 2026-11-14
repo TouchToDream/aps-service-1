@@ -11,8 +11,6 @@ import {
   type NewDonor,
   type NewDonorPart,
   type NewWarehouseItem,
-  PART_CONDITIONS,
-  PART_STATUSES,
   WAREHOUSE_CATEGORY_KINDS,
   WAREHOUSE_ITEM_KINDS,
   WAREHOUSE_SOURCES,
@@ -203,8 +201,6 @@ export function getDonorPartFormDefaults(
     return {
       category: EMPTY_REF,
       name: "",
-      condition: PART_CONDITIONS.UNKNOWN,
-      status: PART_STATUSES.AVAILABLE,
       storagePlace: EMPTY_REF,
       locationId: defaultLocationId ?? undefined,
       note: "",
@@ -213,8 +209,6 @@ export function getDonorPartFormDefaults(
   return {
     category: toRef(part.category),
     name: part.name ?? "",
-    condition: part.condition,
-    status: part.status,
     storagePlace: toRef(part.storagePlace),
     locationId: part.location?.id ?? defaultLocationId ?? undefined,
     note: part.note ?? "",
@@ -227,8 +221,6 @@ export function mapDonorPartFormToNewPart(
   return {
     category: values.category,
     name: values.name,
-    condition: values.condition,
-    status: values.status,
     storagePlace: values.storagePlace,
     locationId: values.locationId,
     note: values.note,

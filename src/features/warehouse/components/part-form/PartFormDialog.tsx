@@ -3,7 +3,6 @@ import { Controller, FormProvider } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { DictionaryRefField } from "@/features/warehouse/components/DictionaryRefField.tsx";
-import { EnumSelectField } from "@/features/warehouse/components/EnumSelectField.tsx";
 import { LocationSelectField } from "@/features/warehouse/components/LocationSelectField.tsx";
 import { PartPhotoSection } from "@/features/warehouse/components/part-form/PartPhotoSection.tsx";
 import { StoragePlaceField } from "@/features/warehouse/components/StoragePlaceField.tsx";
@@ -11,8 +10,6 @@ import { useDonorPartForm } from "@/features/warehouse/hooks/useDonorPartForm.ts
 import { createCategoryFetcher } from "@/features/warehouse/lib/searchFetchers.ts";
 import {
   type DonorPart,
-  PART_CONDITIONS,
-  PART_STATUSES,
   WAREHOUSE_CATEGORY_KINDS,
 } from "@/features/warehouse/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
@@ -92,36 +89,6 @@ export const PartFormDialog = ({
                 placeholder={t("warehouse.part.fields.namePlaceholder")}
                 error={errors.name}
                 {...register("name")}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Controller
-                name="condition"
-                control={control}
-                render={({ field }) => (
-                  <EnumSelectField
-                    label={t("warehouse.part.fields.condition")}
-                    value={field.value}
-                    options={Object.values(PART_CONDITIONS)}
-                    getLabel={(option) =>
-                      t(`warehouse.partConditions.${option}`)
-                    }
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <EnumSelectField
-                    label={t("warehouse.part.fields.status")}
-                    value={field.value}
-                    options={Object.values(PART_STATUSES)}
-                    getLabel={(option) => t(`warehouse.partStatuses.${option}`)}
-                    onChange={field.onChange}
-                  />
-                )}
               />
             </div>
             <Controller

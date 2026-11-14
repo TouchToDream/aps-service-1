@@ -5,11 +5,7 @@ import { FilterSelect } from "@/features/warehouse/components/FilterSelect.tsx";
 import { useLocationFilterOptions } from "@/features/warehouse/hooks/useLocationFilterOptions.ts";
 import { useWarehouseCategories } from "@/features/warehouse/hooks/useWarehouseCategories.ts";
 import { PARTS_FILTER_KEYS } from "@/features/warehouse/lib/constants.ts";
-import {
-  PART_CONDITIONS,
-  PART_STATUSES,
-  WAREHOUSE_CATEGORY_KINDS,
-} from "@/features/warehouse/types.ts";
+import { WAREHOUSE_CATEGORY_KINDS } from "@/features/warehouse/types.ts";
 
 export const PartsFilterBar = () => {
   const { t } = useTranslation();
@@ -24,22 +20,6 @@ export const PartsFilterBar = () => {
         options={categories.map((c) => ({
           value: String(c.id),
           label: c.name,
-        }))}
-      />
-      <FilterSelect
-        filterKey="condition"
-        allLabel={t("warehouse.filters.allConditions")}
-        options={Object.values(PART_CONDITIONS).map((condition) => ({
-          value: condition,
-          label: t(`warehouse.partConditions.${condition}`),
-        }))}
-      />
-      <FilterSelect
-        filterKey="status"
-        allLabel={t("warehouse.filters.allStatuses")}
-        options={Object.values(PART_STATUSES).map((status) => ({
-          value: status,
-          label: t(`warehouse.partStatuses.${status}`),
         }))}
       />
       <FilterSelect
