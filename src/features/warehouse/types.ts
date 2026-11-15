@@ -76,6 +76,8 @@ export type StoragePlace = {
   locationId: number | null;
 };
 
+export type NewStoragePlace = Omit<StoragePlace, "id">;
+
 // ── Items (showcase / supplies) ─────────────────────────────────────────────
 
 /** One row per office — offices where the item was never stocked come as 0. */
@@ -162,7 +164,8 @@ export type Donor = DonorShort & {
   sourceOrderId: number | null;
   /** Free text: where the donor came from ("bought dead on OLX", …). */
   origin: string | null;
-  handedOverOrderId: number | null;
+  /** The order the donor was sold in (as a whole, as an order line). */
+  soldInOrderId: number | null;
   supplier: Supplier | null;
   location: Location | null;
   acquisitionCost: string | null;
@@ -171,9 +174,9 @@ export type Donor = DonorShort & {
 };
 
 /**
- * No condition / status fields: the condition goes into the note, and the
- * availability is derived by the backend — a part is free until an order or
- * quick-order line holds it. Parts of a donor that left the workshop vanish.
+ * Only parts physically on the shelf are listed: one taken into an order or a
+ * quick sale disappears (and comes back when that line is removed), as do the
+ * parts of a donor that left the workshop. No condition / status fields.
  */
 export type DonorPart = {
   id: number;
@@ -184,9 +187,6 @@ export type DonorPart = {
   location: Location | null;
   note: string | null;
   photoUrl: string | null;
-  isAvailable: boolean;
-  usedInOrderId: number | null;
-  usedInQuickOrderId: number | null;
 };
 
 export type DonorDetail = Donor & {
@@ -216,14 +216,6 @@ export type NewDonorPart = {
   note: string;
 };
 
-export type DonorHandOver = {
-  donorId: number;
-  orderId: number;
-  price: string;
-  storagePlaceId: number;
-  managerId: number;
-};
-
 // ── Unified "+ product" search ──────────────────────────────────────────────
 
 export type WarehouseSearchResult = {
@@ -236,12 +228,16 @@ export type WarehouseSearchResult = {
   quantity: number | null;
   storagePlace: StoragePlace | null;
   location: Location | null;
+  /** Only for `donor_part` — which donor the part was taken from. */
+  donor: DonorShort | null;
 };
 
 export type WarehouseSearchParams = {
   q: string;
   locationId: number | null;
   context: WarehouseSearchContext;
+  /** Empty = all sources (the parameter is not sent). */
+  sources: WarehouseSource[];
 };
 
 /** Which warehouse record a sold order/quick-order line points to. */

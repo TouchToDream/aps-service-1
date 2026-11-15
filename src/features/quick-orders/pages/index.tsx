@@ -9,6 +9,7 @@ import { buildQuickOrderColumns } from "@/features/quick-orders/pages/columns.ts
 import type { QuickOrder } from "@/features/quick-orders/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { AddButton } from "@/shared/components/AddButton";
+import { useKeyboardShortcut } from "@/shared/hooks/useKeyboardShortcut.ts";
 import { SmartTable } from "@/widgets/table";
 
 const columns = buildQuickOrderColumns();
@@ -17,6 +18,13 @@ const QuickOrdersPage = () => {
   const navigate = useNavigate();
   const { can } = useAuth();
   const canManage = can(ABILITIES.QUICK_ORDERS_MANAGE);
+
+  // Same shortcut as on the order screens: Insert starts a new quick sale.
+  useKeyboardShortcut({
+    key: "Insert",
+    enabled: canManage,
+    onTrigger: () => navigate(QUICK_ORDERS_LINKS.new()),
+  });
 
   const onRowClick = (quickOrder: QuickOrder) =>
     navigate(QUICK_ORDERS_LINKS.detail(quickOrder.id));

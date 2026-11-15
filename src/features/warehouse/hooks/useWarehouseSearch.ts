@@ -5,6 +5,7 @@ import { warehouseApi } from "@/features/warehouse/api";
 import type {
   WarehouseSearchContext,
   WarehouseSearchResult,
+  WarehouseSource,
 } from "@/features/warehouse/types.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import { useDebounce } from "@/shared/hooks/useDebounce.ts";
@@ -18,6 +19,9 @@ type UseWarehouseSearchParams = {
 type UseWarehouseSearchReturn = {
   query: string;
   setQuery: (value: string) => void;
+  /** Source toggles; none switched on = all sources. */
+  sources: WarehouseSource[];
+  setSources: (sources: WarehouseSource[]) => void;
   results: WarehouseSearchResult[];
   isLoading: boolean;
   isFetching: boolean;
@@ -35,11 +39,12 @@ export const useWarehouseSearch = ({
   context,
 }: UseWarehouseSearchParams): UseWarehouseSearchReturn => {
   const [query, setQuery] = useState("");
+  const [sources, setSources] = useState<WarehouseSource[]>([]);
   const q = useDebounce(query.trim(), SEARCH_DEBOUNCE_MS);
 
   const { data, isLoading, isFetching } = useQuery({
-    queryKey: queryKeys.warehouse.search(q, locationId, context),
-    queryFn: () => warehouseApi.search({ q, locationId, context }),
+    queryKey: queryKeys.warehouse.search(q, locationId, context, sources),
+    queryFn: () => warehouseApi.search({ q, locationId, context, sources }),
     // Stock moves with every sale — never pick from a stale list.
     staleTime: 0,
   });
@@ -47,6 +52,8 @@ export const useWarehouseSearch = ({
   return {
     query,
     setQuery,
+    sources,
+    setSources,
     results: data ?? NO_RESULTS,
     isLoading,
     isFetching,

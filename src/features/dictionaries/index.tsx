@@ -1,5 +1,6 @@
 import {
   AlertCircle,
+  Archive,
   Container,
   Cpu,
   CreditCard,
@@ -106,6 +107,11 @@ const DictionariesPage = () => {
       title: t("sidebar.dictionaries_list.warehouse_categories"),
       icon: Tags,
       href: DICTIONARIES_LINKS.warehouseCategories(),
+    },
+    {
+      title: t("sidebar.dictionaries_list.storage_places"),
+      icon: Archive,
+      href: DICTIONARIES_LINKS.storagePlaces(),
     },
   ];
 

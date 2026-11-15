@@ -66,6 +66,8 @@ export const useOrderWarehouseLineForm = ({
     mutationFn: (values: OrderWarehouseLineSchema) =>
       ordersApi.addProductToOrder(orderId, {
         ...getWarehouseLineSource(result),
+        // Whole donors are sold through their own button, not this picker.
+        warehouseDonorId: null,
         name: result.name,
         price: values.price,
         purchasePrice: "",

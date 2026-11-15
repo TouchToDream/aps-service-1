@@ -64,9 +64,9 @@ export const DonorInfoCard = ({ donor }: DonorInfoCardProps) => {
             <OrderLink orderId={donor.sourceOrderId} />
           </InfoField>
         )}
-        {donor.handedOverOrderId !== null && (
-          <InfoField label={t("warehouse.donor.handedOverOrder")}>
-            <OrderLink orderId={donor.handedOverOrderId} />
+        {donor.soldInOrderId !== null && (
+          <InfoField label={t("warehouse.donor.soldInOrder")}>
+            <OrderLink orderId={donor.soldInOrderId} />
           </InfoField>
         )}
         <InfoField label={t("warehouse.donor.fields.supplier")}>

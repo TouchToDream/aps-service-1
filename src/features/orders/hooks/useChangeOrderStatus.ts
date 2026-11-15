@@ -51,6 +51,8 @@ export const useChangeOrderStatus = (
       // Closing an order finalizes pending referral_income into the
       // referral's balance — refresh referrals so amounts/statuses stay in sync.
       void queryClient.invalidateQueries({ queryKey: queryKeys.referrals.all });
+      // "Closed unsuccessfully" returns every warehouse line to stock.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.warehouse.all });
     },
   });
 

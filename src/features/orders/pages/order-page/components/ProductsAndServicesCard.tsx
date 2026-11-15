@@ -11,6 +11,7 @@ import { useDeleteOrderItem } from "@/features/orders/hooks/useDeleteOrderItem.t
 import { calcOrderItemTotal } from "@/features/orders/lib/cellFormatters.tsx";
 import { type ModalState } from "@/features/orders/pages/order-page/types.ts";
 import { type OrderInfo, type OrderItem } from "@/features/orders/types.ts";
+import { OrderWarehouseActions } from "@/features/warehouse/components/order-actions/OrderWarehouseActions.tsx";
 import { WarehouseLineBadge } from "@/features/warehouse/components/WarehouseLineBadge.tsx";
 import { useKeyboardShortcut } from "@/shared/hooks/useKeyboardShortcut.ts";
 
@@ -83,6 +84,7 @@ export const ProductsAndServicesCard = ({
             <WarehouseLineBadge
               warehouseItemId={row.warehouseItemId}
               donorPartId={row.donorPartId}
+              warehouseDonorId={row.warehouseDonorId}
             />
           )}
         </span>
@@ -149,6 +151,14 @@ export const ProductsAndServicesCard = ({
     <>
       <OrderTableCard
         buttons={buttons}
+        actions={
+          canManage && (
+            <OrderWarehouseActions
+              orderId={orderId}
+              locationId={selectedOrder.location?.id ?? null}
+            />
+          )
+        }
         columns={columns}
         data={orderItems}
         onDelete={canManage ? onDelete : undefined}

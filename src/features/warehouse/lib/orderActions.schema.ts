@@ -19,8 +19,11 @@ export const toDonorSchema = () =>
 export type ToDonorFormValues = z.input<ReturnType<typeof toDonorSchema>>;
 export type ToDonorSchema = z.infer<ReturnType<typeof toDonorSchema>>;
 
-/** Order → swap: the customer gets a whole donor instead of a repair. */
-export const donorSwapSchema = () =>
+/**
+ * Order → "Sell donor": a whole donor becomes a product line of the order.
+ * Name and purchase price come from the donor card; the manager sets the price.
+ */
+export const sellDonorSchema = () =>
   z.object({
     donorId: z
       .number()
@@ -39,12 +42,11 @@ export const donorSwapSchema = () =>
       }),
     donorLabel: z.string(),
     price: requiredDigitsField(),
-    storagePlace: requiredStoragePlace(),
     managerId: z
       .number({ error: i18next.t("validation.field_required") })
       .int()
       .positive(),
   });
 
-export type DonorSwapFormValues = z.input<ReturnType<typeof donorSwapSchema>>;
-export type DonorSwapSchema = z.infer<ReturnType<typeof donorSwapSchema>>;
+export type SellDonorFormValues = z.input<ReturnType<typeof sellDonorSchema>>;
+export type SellDonorSchema = z.infer<ReturnType<typeof sellDonorSchema>>;

@@ -118,7 +118,8 @@
       "accessories_page": {
         "title": "Комплектации"
       },
-      "warehouse_categories": "Категории склада"
+      "warehouse_categories": "Категории склада",
+      "storage_places": "Места хранения"
     },
     "warehouse": "Склад"
   },
@@ -253,7 +254,8 @@
     "supplies": "Расходники",
     "donors": "Доноры",
     "parts": "Запчасти",
-    "warehouseCategories": "Категории склада"
+    "warehouseCategories": "Категории склада",
+    "storagePlaces": "Места хранения"
   },
   "profile": {
     "settings": "Настройки профиля",
@@ -826,6 +828,11 @@
         "in_progress": "В работе",
         "with_partners": "У партнеров"
       }
+    },
+    "headerHints": {
+      "forCustomer": "Новый заказ для этого же клиента",
+      "forDevice": "Новый заказ с теми же данными клиента и устройства",
+      "documents": "Квитанции и акты по этому заказу"
     }
   },
   "works": {
@@ -1293,10 +1300,6 @@
       "correction": "Корректировка",
       "return": "Возврат"
     },
-    "partAvailability": {
-      "available": "Свободна",
-      "used": "Использована"
-    },
     "noLocation": "без офиса",
     "noCategory": "Без категории",
     "filters": {
@@ -1317,7 +1320,6 @@
       "status": "Статус",
       "location": "Офис",
       "partsCount": "Запчастей",
-      "availability": "Доступность",
       "donor": "Донор"
     },
     "item": {
@@ -1391,7 +1393,7 @@
       "noParts": "Запчастей пока нет",
       "addPart": "Добавить запчасть",
       "sourceOrder": "Из заказа",
-      "handedOverOrder": "Выдан в заказе",
+      "soldInOrder": "Продан в заказе",
       "unnamed": "Донор #{{id}}",
       "dispose": "Списать",
       "disposeTitle": "Списать донора?",
@@ -1414,8 +1416,7 @@
       "successUpdate": "Запчасть обновлена",
       "deleteTitle": "Удалить запчасть?",
       "deleteDescription": "Запчасть будет удалена со склада.",
-      "withoutDonor": "Без донора",
-      "usedInOrder": "В заказе"
+      "withoutDonor": "Без донора"
     },
     "picker": {
       "warehouse": "Со склада",
@@ -1427,11 +1428,18 @@
       "change": "Выбрать другое",
       "partUnavailable": "Эта запчасть уже недоступна",
       "partQuantityHint": "Запчасть донора всегда продаётся поштучно",
-      "readOnlyHint": "Название и закупка берутся из карточки склада"
+      "readOnlyHint": "Название и закупка берутся из карточки склада",
+      "sourceFilters": {
+        "showcase": "Витрина",
+        "supply": "Расходники",
+        "donor_part": "Запчасти"
+      },
+      "fromDonor": "из {{donor}}"
     },
     "badges": {
       "warehouse": "Склад",
-      "donor": "Донор"
+      "donor": "Донор",
+      "wholeDonor": "Целый донор"
     },
     "orderActions": {
       "toDonor": "В доноры",
@@ -1439,15 +1447,15 @@
       "toDonorDescription": "Из данных заказа будет создан донор без запчастей.",
       "noLocation": "Сначала укажите офис заказа",
       "toDonorSuccess": "Донор создан",
-      "swap": "Свап",
-      "swapTitle": "Выдать донора клиенту",
-      "swapDescription": "Клиент получает донора целиком вместо ремонта. В заказ добавится строка с донором, а из устройства клиента будет создан новый донор.",
-      "swapDonor": "Какого донора выдаём",
-      "swapPrice": "Цена в заказе",
-      "swapStoragePlace": "Куда положить нового донора",
-      "swapManager": "Исполнитель",
-      "swapConfirm": "Выдать",
-      "swapSuccess": "Донор выдан клиенту"
+      "toDonorHint": "Оставить аппарат клиента в мастерской как донора — уйдёт на склад доноров",
+      "sellDonor": "Продать донора",
+      "sellDonorHint": "Продать клиенту целого донора со склада — станет товаром в этом заказе",
+      "sellDonorDescription": "Название и закупка возьмутся из карточки донора. Донор уйдёт со склада вместе с запчастями; если удалить строку из заказа — вернётся.",
+      "donor": "Донор",
+      "sellPrice": "Цена продажи",
+      "manager": "Исполнитель",
+      "sellDonorConfirm": "Продать",
+      "sellDonorSuccess": "Донор добавлен в заказ"
     },
     "search": {
       "items": "Поиск по названию или категории",
@@ -1460,6 +1468,9 @@
         "supply": "Расходники",
         "part": "Запчасти"
       }
+    },
+    "storagePlaces": {
+      "noLocation": "Без офиса (общее)"
     }
   }
 }

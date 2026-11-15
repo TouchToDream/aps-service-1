@@ -2,6 +2,7 @@ import { Loader2, PenLine, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { WarehouseResultRow } from "@/features/warehouse/components/picker/WarehouseResultRow.tsx";
+import { WarehouseSourceFilter } from "@/features/warehouse/components/picker/WarehouseSourceFilter.tsx";
 import { useWarehouseSearch } from "@/features/warehouse/hooks/useWarehouseSearch.ts";
 import type {
   WarehouseSearchContext,
@@ -28,8 +29,15 @@ export const WarehousePicker = ({
   onManual,
 }: WarehousePickerProps) => {
   const { t } = useTranslation();
-  const { query, setQuery, results, isLoading, isFetching } =
-    useWarehouseSearch({ locationId, context });
+  const {
+    query,
+    setQuery,
+    sources,
+    setSources,
+    results,
+    isLoading,
+    isFetching,
+  } = useWarehouseSearch({ locationId, context });
 
   return (
     // min-w-0: long (truncated) names must not widen the dialog;
@@ -48,6 +56,7 @@ export const WarehousePicker = ({
           <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground" />
         )}
       </div>
+      <WarehouseSourceFilter value={sources} onChange={setSources} />
       <ul className="min-h-0 flex-1 overflow-y-auto rounded-md border">
         {!isLoading && results.length === 0 && (
           <li className="px-3 py-2 text-sm text-muted-foreground">

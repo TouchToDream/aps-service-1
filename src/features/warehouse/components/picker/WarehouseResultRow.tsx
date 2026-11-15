@@ -2,7 +2,10 @@ import { useTranslation } from "react-i18next";
 
 import { WarehouseSourceBadge } from "@/features/warehouse/components/picker/WarehouseSourceBadge.tsx";
 import { StockQuantity } from "@/features/warehouse/components/StockQuantity.tsx";
-import { isDonorPartSource } from "@/features/warehouse/lib/service.ts";
+import {
+  getDonorTitle,
+  isDonorPartSource,
+} from "@/features/warehouse/lib/service.ts";
 import type { WarehouseSearchResult } from "@/features/warehouse/types.ts";
 import { MoneyAmount } from "@/shared/components/common/MoneyAmount.tsx";
 
@@ -20,6 +23,12 @@ export const WarehouseResultRow = ({ result }: WarehouseResultRowProps) => {
         <p className="truncate font-medium">{result.name}</p>
         <p className="truncate text-xs text-muted-foreground">
           {result.category.name}
+          {result.donor &&
+            ` · ${t("warehouse.picker.fromDonor", {
+              donor:
+                getDonorTitle(result.donor) ??
+                t("warehouse.donor.unnamed", { id: result.donor.id }),
+            })}`}
           {result.storagePlace && ` · ${result.storagePlace.name}`}
         </p>
       </div>

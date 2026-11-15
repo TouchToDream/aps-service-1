@@ -4,7 +4,6 @@ import {
   InfoTable,
   type InfoTableColumn,
 } from "@/features/orders/components/info-table/InfoTable.tsx";
-import { PartAvailabilityBadge } from "@/features/warehouse/components/PartAvailabilityBadge.tsx";
 import { getPartDisplayName } from "@/features/warehouse/lib/service.ts";
 import type { DonorPart } from "@/features/warehouse/types.ts";
 import { Button } from "@/shared/components/ui/button.tsx";
@@ -39,11 +38,6 @@ export const DonorPartsCard = ({
       key: "category",
       label: t("warehouse.table.category"),
       render: (part) => part.category.name,
-    },
-    {
-      key: "isAvailable",
-      label: t("warehouse.table.availability"),
-      render: (part) => <PartAvailabilityBadge part={part} />,
     },
     {
       key: "storagePlace",

@@ -61,9 +61,13 @@ const AddOrderItemModal = ({
   // A line sold from the warehouse keeps the card's name and purchase price.
   const isWarehouseLine =
     editItem?.type === "product" &&
-    (editItem.warehouseItemId !== null || editItem.donorPartId !== null);
+    (editItem.warehouseItemId !== null ||
+      editItem.donorPartId !== null ||
+      editItem.warehouseDonorId !== null);
+  // A donor part or a whole donor is one physical thing — quantity stays 1.
   const isDonorPartLine =
-    editItem?.type === "product" && editItem.donorPartId !== null;
+    editItem?.type === "product" &&
+    (editItem.donorPartId !== null || editItem.warehouseDonorId !== null);
 
   const initialData = editItem
     ? getOrderItemInitialValues(editItem)

@@ -122,7 +122,7 @@ export const DonorDtoSchema = DonorShortDtoSchema.extend({
   storage_place: StoragePlaceDtoSchema.nullable(),
   source_order_id: z.number().nullable(),
   origin: z.string().nullable(),
-  handed_over_order_id: z.number().nullable(),
+  sold_in_order_id: z.number().nullable(),
   supplier: SupplierDtoSchema.nullable(),
   location: LocationDtoSchema.nullable(),
   acquisition_cost: z.string().nullable(),
@@ -140,9 +140,6 @@ export const DonorPartDtoSchema = z.object({
   location: LocationDtoSchema.nullable(),
   note: z.string().nullable(),
   photo_url: z.string().nullable(),
-  is_available: z.boolean(),
-  used_in_order_id: z.number().nullable(),
-  used_in_quick_order_id: z.number().nullable(),
 });
 export type DonorPartDto = z.infer<typeof DonorPartDtoSchema>;
 
@@ -179,6 +176,7 @@ export const WarehouseSearchResultDtoSchema = z.object({
   quantity: z.number().nullable(),
   storage_place: StoragePlaceDtoSchema.nullable(),
   location: LocationDtoSchema.nullable(),
+  donor: DonorShortDtoSchema.nullable(),
 });
 export type WarehouseSearchResultDto = z.infer<
   typeof WarehouseSearchResultDtoSchema

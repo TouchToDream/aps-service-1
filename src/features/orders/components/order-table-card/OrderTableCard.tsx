@@ -15,6 +15,8 @@ type OrderTableCardButton = {
 
 interface OrderTableCardProps<T extends { id: string | number }> {
   buttons?: OrderTableCardButton[];
+  /** Extra controls in the same row, after the "+ add" buttons. */
+  actions?: ReactNode;
   columns: InfoTableColumn<T>[];
   data: T[];
   onDelete?: (item: T) => void;
@@ -29,6 +31,7 @@ interface OrderTableCardProps<T extends { id: string | number }> {
 
 export const OrderTableCard = <T extends { id: string | number }>({
   buttons,
+  actions,
   columns,
   data,
   onDelete,
@@ -43,9 +46,9 @@ export const OrderTableCard = <T extends { id: string | number }>({
   return (
     <Card>
       <CardContent className="p-2 sm:p-6">
-        {buttons && buttons.length > 0 && (
+        {((buttons && buttons.length > 0) || actions) && (
           <div className="mb-2 flex flex-wrap gap-2">
-            {buttons.map((btn) => (
+            {buttons?.map((btn) => (
               <Button
                 key={btn.label}
                 variant="default"
@@ -56,6 +59,7 @@ export const OrderTableCard = <T extends { id: string | number }>({
                 {btn.label}
               </Button>
             ))}
+            {actions}
           </div>
         )}
         <InfoTable

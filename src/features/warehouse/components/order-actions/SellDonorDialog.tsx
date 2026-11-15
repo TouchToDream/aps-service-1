@@ -3,9 +3,8 @@ import { useTranslation } from "react-i18next";
 
 import { ManagerSelect } from "@/features/orders/components/ManagerSelect.tsx";
 import { useManagerOptions } from "@/features/users/hooks/useManagerOptions.ts";
-import { SwapDonorField } from "@/features/warehouse/components/order-actions/SwapDonorField.tsx";
-import { StoragePlaceField } from "@/features/warehouse/components/StoragePlaceField.tsx";
-import { useDonorSwap } from "@/features/warehouse/hooks/useDonorSwap.ts";
+import { DonorSearchField } from "@/features/warehouse/components/order-actions/DonorSearchField.tsx";
+import { useSellDonor } from "@/features/warehouse/hooks/useSellDonor.ts";
 import { FormField } from "@/shared/components/common/FormField.tsx";
 import { Button } from "@/shared/components/ui/button.tsx";
 import {
@@ -19,23 +18,17 @@ import {
 import { Label } from "@/shared/components/ui/label.tsx";
 import { stripNonDigits } from "@/shared/lib/utils.ts";
 
-interface DonorSwapDialogProps {
+interface SellDonorDialogProps {
   orderId: number;
-  locationId: number | null;
   onClose: () => void;
 }
 
-/** A single atomic action — not a two-step flow. */
-export const DonorSwapDialog = ({
-  orderId,
-  locationId,
-  onClose,
-}: DonorSwapDialogProps) => {
+/** Name and purchase price come from the donor card — only the price is asked. */
+export const SellDonorDialog = ({ orderId, onClose }: SellDonorDialogProps) => {
   const { t } = useTranslation();
   const { users, isLoadingUsers } = useManagerOptions({ activeOnly: true });
-  const { methods, onSubmit, isPending } = useDonorSwap({
+  const { methods, onSubmit, isPending } = useSellDonor({
     orderId,
-    locationId,
     onSuccess: onClose,
   });
   const {
@@ -50,17 +43,17 @@ export const DonorSwapDialog = ({
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t("warehouse.orderActions.swapTitle")}</DialogTitle>
+          <DialogTitle>{t("warehouse.orderActions.sellDonor")}</DialogTitle>
           <DialogDescription>
-            {t("warehouse.orderActions.swapDescription")}
+            {t("warehouse.orderActions.sellDonorDescription")}
           </DialogDescription>
         </DialogHeader>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
           className="flex flex-col gap-4"
         >
-          <SwapDonorField
-            label={t("warehouse.orderActions.swapDonor")}
+          <DonorSearchField
+            label={t("warehouse.orderActions.donor")}
             value={watch("donorLabel")}
             onType={(text) => {
               setValue("donorLabel", text);
@@ -73,7 +66,7 @@ export const DonorSwapDialog = ({
             error={errors.donorId?.message}
           />
           <div className="flex flex-col gap-1">
-            <Label>{t("warehouse.orderActions.swapPrice")}</Label>
+            <Label>{t("warehouse.orderActions.sellPrice")}</Label>
             <FormField
               inputMode="numeric"
               onInput={(e) => {
@@ -83,20 +76,8 @@ export const DonorSwapDialog = ({
               {...register("price")}
             />
           </div>
-          <Controller
-            name="storagePlace"
-            control={control}
-            render={({ field }) => (
-              <StoragePlaceField
-                label={t("warehouse.orderActions.swapStoragePlace")}
-                value={field.value}
-                onChange={field.onChange}
-                error={errors.storagePlace?.message}
-              />
-            )}
-          />
           <div className="flex flex-col gap-1">
-            <Label>{t("warehouse.orderActions.swapManager")}</Label>
+            <Label>{t("warehouse.orderActions.manager")}</Label>
             <Controller
               name="managerId"
               control={control}
@@ -123,7 +104,7 @@ export const DonorSwapDialog = ({
               {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isPending}>
-              {t("warehouse.orderActions.swapConfirm")}
+              {t("warehouse.orderActions.sellDonorConfirm")}
             </Button>
           </DialogFooter>
         </form>

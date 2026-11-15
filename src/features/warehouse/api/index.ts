@@ -17,7 +17,6 @@ import {
 import { WAREHOUSE_API } from "@/features/warehouse/api/endpoints.ts";
 import {
   mapDonorDetailDto,
-  mapDonorHandOverToDto,
   mapDonorPartDto,
   mapNewDonorPartToDto,
   mapNewDonorToDto,
@@ -35,11 +34,11 @@ import type {
   DictionaryRef,
   Donor,
   DonorDetail,
-  DonorHandOver,
   DonorPart,
   NewDonor,
   NewDonorPart,
   NewStockMovement,
+  NewStoragePlace,
   NewWarehouseItem,
   StoragePlace,
   WarehouseCategory,
@@ -218,16 +217,6 @@ export const warehouseApi = {
     await del<void>(WAREHOUSE_API.donor(id));
   },
 
-  handOverDonor: async (data: DonorHandOver): Promise<DonorDetail> => {
-    const payload = mapDonorHandOverToDto(data);
-    const response = await post<typeof payload, DataEnvelope<DonorDetailDto>>(
-      WAREHOUSE_API.donorHandOver(data.donorId),
-      payload,
-    );
-    const dto = parseDto(DonorDetailDtoSchema, response.data);
-    return mapDonorDetailDto(dto);
-  },
-
   orderToDonor: async (
     orderId: number,
     storagePlaceId: number,
@@ -367,6 +356,25 @@ export const warehouseApi = {
     return mapStoragePlaceDto(dto.data);
   },
 
+  /** Rename and / or move to another office; a duplicate name → 422 on `name`. */
+  updateStoragePlace: async (
+    id: number,
+    place: NewStoragePlace,
+  ): Promise<StoragePlace> => {
+    const payload = { name: place.name, location_id: place.locationId };
+    const response = await put<typeof payload, unknown>(
+      WAREHOUSE_API.storagePlace(id),
+      payload,
+    );
+    const dto = parseDto(StoragePlaceResponseDtoSchema, response);
+    return mapStoragePlaceDto(dto.data);
+  },
+
+  /** 422 while any donor or part is still kept there. */
+  deleteStoragePlace: async (id: number): Promise<void> => {
+    await del<void>(WAREHOUSE_API.storagePlace(id));
+  },
+
   /**
    * Endpoints that take only `storage_place_id`: a newly typed place is
    * found-or-created first (in the given office).
@@ -388,9 +396,12 @@ export const warehouseApi = {
     q,
     locationId,
     context,
+    sources,
   }: WarehouseSearchParams): Promise<WarehouseSearchResult[]> => {
     const params = new URLSearchParams({ context });
     if (q) params.set("q", q);
+    // Nothing picked = everything, so the parameter is left out.
+    if (sources.length) params.set("sources", sources.join(","));
     if (locationId !== null) params.set("location_id", String(locationId));
     const response = await get(
       `${WAREHOUSE_API.search()}?${params.toString()}`,

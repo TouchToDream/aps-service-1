@@ -89,6 +89,9 @@ const PriceListPage = lazy(
 const WarehouseCategoriesPage = lazy(
   () => import("@/features/dictionaries/pages/WarehouseCategories.tsx"),
 );
+const StoragePlacesPage = lazy(
+  () => import("@/features/dictionaries/pages/StoragePlaces.tsx"),
+);
 const WorksPage = lazy(() => import("@/features/works/pages"));
 const WorkCreatePage = lazy(
   () => import("@/features/works/pages/WorkCreatePage"),
@@ -295,6 +298,10 @@ export const modulesRoutes: RouteObject = {
     {
       path: DICTIONARIES_ROUTES.warehouseCategories,
       element: <WarehouseCategoriesPage />,
+    },
+    {
+      path: DICTIONARIES_ROUTES.storagePlaces,
+      element: <StoragePlacesPage />,
     },
     {
       element: <ProtectedRoute requiredAbility={ABILITIES.REFERRALS_MANAGE} />,

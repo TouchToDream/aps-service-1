@@ -39,6 +39,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   locations: "breadcrumbs.locations",
   "price-list": "breadcrumbs.priceList",
   "warehouse-categories": "breadcrumbs.warehouseCategories",
+  "storage-places": "breadcrumbs.storagePlaces",
   billing: "breadcrumbs.billing",
   balances: "breadcrumbs.balances",
   transactions: "breadcrumbs.transactions",

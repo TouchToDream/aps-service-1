@@ -31,13 +31,13 @@ import { MobileHistoryDrawer } from "@/features/orders/pages/order-page/componen
 import { PaymentsCard } from "@/features/orders/pages/order-page/components/PaymentsCard.tsx";
 import { ProductsAndServicesCard } from "@/features/orders/pages/order-page/components/ProductsAndServicesCard.tsx";
 import { buildOrderHistory } from "@/features/orders/pages/order-page/services.ts";
-import { OrderWarehouseActions } from "@/features/warehouse/components/order-actions/OrderWarehouseActions.tsx";
 import { queryClient } from "@/shared/api/queryClient.ts";
 import { queryKeys } from "@/shared/api/queryKeys.ts";
 import {
   CreateOrderForCustomerButton,
   CreateOrderForDeviceButton,
 } from "@/shared/components/common/buttons/index.ts";
+import { HintTooltip } from "@/shared/components/common/HintTooltip.tsx";
 import { Loader } from "@/shared/components/common/Loader.tsx";
 import NotFoundPage from "@/shared/components/errors/NotFound.tsx";
 import { QueryPageGuard } from "@/shared/components/errors/QueryPageGuard.tsx";
@@ -126,6 +126,9 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
     // never refreshes the orders table or referral balances/transactions.
     void queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
     void queryClient.invalidateQueries({ queryKey: queryKeys.referrals.all });
+    // "Closed unsuccessfully" returns the order's warehouse lines to stock
+    // (and unlinks them) — refresh stock, donors and parts.
+    void queryClient.invalidateQueries({ queryKey: queryKeys.warehouse.all });
   }, []);
 
   return (
@@ -150,33 +153,38 @@ const OrderPageContent = ({ orderId }: OrderPageContentProps) => {
                       <div className="flex items-center gap-2 shrink-0">
                         {canManageOrders && (
                           <>
-                            <CreateOrderForCustomerButton
-                              onClick={() =>
-                                createOrderForCustomer(selectedOrder.customer)
-                              }
-                            />
-                            <CreateOrderForDeviceButton
-                              title={t("orders.createForDevice")}
-                              onClick={() =>
-                                createOrderForDevice(
-                                  selectedOrder.customer,
-                                  selectedOrder,
-                                )
-                              }
-                            />
+                            <HintTooltip
+                              hint={t("orders.headerHints.forCustomer")}
+                            >
+                              <CreateOrderForCustomerButton
+                                onClick={() =>
+                                  createOrderForCustomer(selectedOrder.customer)
+                                }
+                              />
+                            </HintTooltip>
+                            <HintTooltip
+                              hint={t("orders.headerHints.forDevice")}
+                            >
+                              <CreateOrderForDeviceButton
+                                onClick={() =>
+                                  createOrderForDevice(
+                                    selectedOrder.customer,
+                                    selectedOrder,
+                                  )
+                                }
+                              />
+                            </HintTooltip>
                           </>
                         )}
-                        <OrderWarehouseActions
-                          orderId={orderId}
-                          locationId={selectedOrder.location?.id ?? null}
-                        />
-                        <button
-                          type="button"
-                          className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
-                          onClick={() => setIsPrintOpen(true)}
-                        >
-                          <Printer className="h-4 w-4 sm:h-5 sm:w-5" />
-                        </button>
+                        <HintTooltip hint={t("orders.headerHints.documents")}>
+                          <button
+                            type="button"
+                            className="h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors"
+                            onClick={() => setIsPrintOpen(true)}
+                          >
+                            <Printer className="h-4 w-4 sm:h-5 sm:w-5" />
+                          </button>
+                        </HintTooltip>
                       </div>
                     </div>
 

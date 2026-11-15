@@ -10,7 +10,7 @@ import SearchableSelect, {
   type SearchableSelectOption,
 } from "@/widgets/searchable-select";
 
-interface SwapDonorFieldProps {
+interface DonorSearchFieldProps {
   label: string;
   value: string;
   /** Typing drops the previous choice until an option is picked again. */
@@ -19,13 +19,13 @@ interface SwapDonorFieldProps {
   error?: string;
 }
 
-export const SwapDonorField = ({
+export const DonorSearchField = ({
   label,
   value,
   onType,
   onSelect,
   error,
-}: SwapDonorFieldProps) => {
+}: DonorSearchFieldProps) => {
   const { t } = useTranslation();
 
   const renderOption = (option: SearchableSelectOption<DonorOptionMeta>) => (

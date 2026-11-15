@@ -107,6 +107,7 @@ export const OrderProductSchema = z.object({
   // donor part); both null for a manual line.
   warehouse_item_id: z.number().nullable().optional(),
   donor_part_id: z.number().nullable().optional(),
+  warehouse_donor_id: z.number().nullable().optional(),
   completed_at: z.iso.datetime().nullable(),
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),

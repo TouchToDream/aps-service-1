@@ -2,7 +2,7 @@ import { MonitorSmartphone } from "lucide-react";
 
 interface CreateOrderForDeviceButtonProps {
   onClick: () => void;
-  title: string;
+  title?: string;
 }
 
 export const CreateOrderForDeviceButton = ({

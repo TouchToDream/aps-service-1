@@ -99,6 +99,8 @@ export type OrderProduct = {
   quantity: number;
   warehouseItemId: number | null;
   donorPartId: number | null;
+  /** A whole donor sold as an order line (orders only, not quick sales). */
+  warehouseDonorId: number | null;
   completedAt: string | null;
   createdAt: string;
   updatedAt: string;

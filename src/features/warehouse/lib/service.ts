@@ -10,7 +10,9 @@ import {
   type ManualStockReason,
   type NewDonor,
   type NewDonorPart,
+  type NewStoragePlace,
   type NewWarehouseItem,
+  type StoragePlace,
   WAREHOUSE_CATEGORY_KINDS,
   WAREHOUSE_ITEM_KINDS,
   WAREHOUSE_SOURCES,
@@ -20,6 +22,7 @@ import {
   type WarehouseItemKind,
   type WarehouseLineSource,
   type WarehouseSearchResult,
+  type WarehouseSource,
 } from "@/features/warehouse/types.ts";
 import { assertNever } from "@/shared/lib/assertNever.ts";
 import type { PaginatedResponse } from "@/widgets/table/models/types.ts";
@@ -74,6 +77,17 @@ export function getSignedStockQuantity(
     default:
       return assertNever(reason);
   }
+}
+
+/** Switches one picker source on / off, keeping the canonical order. */
+export function toggleSource(
+  sources: readonly WarehouseSource[],
+  source: WarehouseSource,
+): WarehouseSource[] {
+  const next = sources.includes(source)
+    ? sources.filter((item) => item !== source)
+    : [...sources, source];
+  return Object.values(WAREHOUSE_SOURCES).filter((item) => next.includes(item));
 }
 
 export function getWarehouseLineSource(
@@ -229,7 +243,8 @@ export function mapDonorPartFormToNewPart(
 
 // ── Server errors ───────────────────────────────────────────────────────────
 
-const SOURCE_ERROR_KEY = /(^|\.)(warehouse_item_id|donor_part_id)$/;
+const SOURCE_ERROR_KEY =
+  /(^|\.)(warehouse_item_id|donor_part_id|warehouse_donor_id)$/;
 
 /**
  * Validation messages about the warehouse source of a line (part already used,
@@ -255,6 +270,43 @@ export function toSinglePageResponse<T extends { id: number }>(
   return {
     items,
     meta: { currentPage: 1, lastPage: 1, total: items.length },
+  };
+}
+
+// ── Storage places dictionary ───────────────────────────────────────────────
+
+/** Select value for "no office" — Radix Select can't hold an empty string. */
+export const NO_LOCATION_VALUE = "none";
+
+/**
+ * The dictionary list: optionally one office (`?location_id=`), grouped by
+ * office (places without one last), then by name.
+ */
+export function prepareStoragePlaceList(
+  places: readonly StoragePlace[],
+  locationFilter: string | undefined,
+  search: string,
+): StoragePlace[] {
+  const locationId = locationFilter ? Number(locationFilter) : null;
+  return filterByName(places, search)
+    .filter((place) => locationId === null || place.locationId === locationId)
+    .sort(
+      (a, b) =>
+        (a.locationId ?? Number.MAX_SAFE_INTEGER) -
+          (b.locationId ?? Number.MAX_SAFE_INTEGER) ||
+        a.name.localeCompare(b.name),
+    );
+}
+
+/** The dictionary form's flat string values → a storage place. */
+export function mapStoragePlaceFormValues(
+  values: Partial<Record<string, unknown>>,
+): NewStoragePlace {
+  const location = String(values.location_id ?? "");
+  return {
+    name: String(values.name ?? "").trim(),
+    locationId:
+      location && location !== NO_LOCATION_VALUE ? Number(location) : null,
   };
 }
 

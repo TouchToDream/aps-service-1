@@ -7,17 +7,29 @@ import { Badge } from "@/shared/components/ui/badge.tsx";
 interface WarehouseLineBadgeProps {
   warehouseItemId: number | null;
   donorPartId: number | null;
+  /** Orders only — quick sales can't sell a whole donor. */
+  warehouseDonorId?: number | null;
 }
 
 /**
  * Where an order / quick-sale line came from. There is no single-part screen,
- * so a donor part leads to the parts list.
+ * so a donor part leads to the parts list. A sold whole donor has no screen
+ * at all (its card is gone), so its badge is not a link.
  */
 export const WarehouseLineBadge = ({
   warehouseItemId,
   donorPartId,
+  warehouseDonorId = null,
 }: WarehouseLineBadgeProps) => {
   const { t } = useTranslation();
+
+  if (warehouseDonorId !== null) {
+    return (
+      <Badge variant="outline" className="shrink-0">
+        {t("warehouse.badges.wholeDonor")}
+      </Badge>
+    );
+  }
 
   if (warehouseItemId === null && donorPartId === null) return null;
 

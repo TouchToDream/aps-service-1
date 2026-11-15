@@ -58,6 +58,7 @@ export const useOrderItemSubmit = ({
           // warehouse line the backend ignores name/purchase price anyway.
           warehouseItemId: null,
           donorPartId: null,
+          warehouseDonorId: null,
         };
         return isEdit
           ? ordersApi.editProductInOrder(orderId, payload, editItemId)

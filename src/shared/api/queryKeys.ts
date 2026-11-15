@@ -167,9 +167,23 @@ export const queryKeys = {
       ] as const,
     storagePlaces: () =>
       [...queryKeys.warehouse.all, "storage-places"] as const,
+    // Shares the ["warehouse", "storage-places"] prefix with `storagePlaces()`,
+    // so editing the dictionary also refreshes the form dropdowns.
+    storagePlaceList: makeEntityKey(["warehouse"], "storage-places"),
     searchAll: () => [...queryKeys.warehouse.all, "search"] as const,
-    search: (q: string, locationId: number | null, context: string) =>
-      [...queryKeys.warehouse.searchAll(), q, locationId, context] as const,
+    search: (
+      q: string,
+      locationId: number | null,
+      context: string,
+      sources: readonly string[],
+    ) =>
+      [
+        ...queryKeys.warehouse.searchAll(),
+        q,
+        locationId,
+        context,
+        [...sources],
+      ] as const,
   },
 
   statistics: {

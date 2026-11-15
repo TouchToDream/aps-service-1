@@ -54,6 +54,7 @@ describe("mapNewProductToDto (order line)", () => {
     supplierName: "Rozetka",
     quantity: 1,
     managerId: 12,
+    warehouseDonorId: null,
   };
 
   it("does not send name / purchase price for a warehouse line", () => {
@@ -70,6 +71,23 @@ describe("mapNewProductToDto (order line)", () => {
     ).toEqual({
       donor_part_id: 77,
       price: "1300",
+      quantity: 1,
+      manager_id: 12,
+    });
+  });
+
+  it("sells a whole donor by id — name and purchase come from its card", () => {
+    expect(
+      mapNewProductToDto({
+        ...line,
+        warehouseItemId: null,
+        donorPartId: null,
+        warehouseDonorId: 8,
+        price: "3000",
+      }),
+    ).toEqual({
+      warehouse_donor_id: 8,
+      price: "3000",
       quantity: 1,
       manager_id: 12,
     });

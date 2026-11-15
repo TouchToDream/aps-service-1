@@ -152,6 +152,7 @@ export function mapOrderProductDtoToOrderProduct(
     quantity: dto.quantity,
     warehouseItemId: dto.warehouse_item_id ?? null,
     donorPartId: dto.donor_part_id ?? null,
+    warehouseDonorId: dto.warehouse_donor_id ?? null,
     completedAt: dto.completed_at,
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
@@ -318,6 +319,14 @@ export function mapNewProductToDto(product: NewOrderProduct) {
   if (product.donorPartId !== null) {
     return {
       donor_part_id: product.donorPartId,
+      price: product.price,
+      quantity: product.quantity,
+      manager_id: product.managerId,
+    };
+  }
+  if (product.warehouseDonorId !== null) {
+    return {
+      warehouse_donor_id: product.warehouseDonorId,
       price: product.price,
       quantity: product.quantity,
       manager_id: product.managerId,

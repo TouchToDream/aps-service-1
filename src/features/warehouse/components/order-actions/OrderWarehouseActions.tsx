@@ -1,23 +1,25 @@
-import { ArrowLeftRight, PackageOpen } from "lucide-react";
+import { HandCoins, PackageOpen } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { DonorSwapDialog } from "@/features/warehouse/components/order-actions/DonorSwapDialog.tsx";
+import { SellDonorDialog } from "@/features/warehouse/components/order-actions/SellDonorDialog.tsx";
 import { ToDonorDialog } from "@/features/warehouse/components/order-actions/ToDonorDialog.tsx";
 import { useCanManageWarehouse } from "@/features/warehouse/hooks/useCanManageWarehouse.ts";
+import { HintTooltip } from "@/shared/components/common/HintTooltip.tsx";
+import { Button } from "@/shared/components/ui/button.tsx";
 
-// Same look as the other order header icon buttons (print, create for device).
-const ICON_BUTTON_CLASS =
-  "h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50";
-
-type OrderWarehouseDialog = "toDonor" | "swap" | null;
+type OrderWarehouseDialog = "toDonor" | "sellDonor" | null;
 
 interface OrderWarehouseActionsProps {
   orderId: number;
-  /** A donor needs an office — both actions require one on the order. */
+  /** "To donors" needs the order's office — the new donor is kept there. */
   locationId: number | null;
 }
 
+/**
+ * Lives on the products & services card: both actions are about the order's
+ * goods. An exchange is just the two pressed one after the other.
+ */
 export const OrderWarehouseActions = ({
   orderId,
   locationId,
@@ -29,32 +31,38 @@ export const OrderWarehouseActions = ({
   if (!canManage) return null;
 
   const hasLocation = locationId !== null;
-  const disabledTitle = t("warehouse.orderActions.noLocation");
 
   return (
     <>
-      <button
-        type="button"
-        className={ICON_BUTTON_CLASS}
-        title={
-          hasLocation ? t("warehouse.orderActions.toDonorTitle") : disabledTitle
+      <HintTooltip
+        hint={
+          hasLocation
+            ? t("warehouse.orderActions.toDonorHint")
+            : t("warehouse.orderActions.noLocation")
         }
-        disabled={!hasLocation}
-        onClick={() => setDialog("toDonor")}
       >
-        <PackageOpen className="h-4 w-4 sm:h-5 sm:w-5" />
-      </button>
-      <button
-        type="button"
-        className={ICON_BUTTON_CLASS}
-        title={
-          hasLocation ? t("warehouse.orderActions.swapTitle") : disabledTitle
-        }
-        disabled={!hasLocation}
-        onClick={() => setDialog("swap")}
-      >
-        <ArrowLeftRight className="h-4 w-4 sm:h-5 sm:w-5" />
-      </button>
+        <Button
+          type="button"
+          variant="outline"
+          className="text-base"
+          disabled={!hasLocation}
+          onClick={() => setDialog("toDonor")}
+        >
+          <PackageOpen size={16} />
+          {t("warehouse.orderActions.toDonor")}
+        </Button>
+      </HintTooltip>
+      <HintTooltip hint={t("warehouse.orderActions.sellDonorHint")}>
+        <Button
+          type="button"
+          variant="outline"
+          className="text-base"
+          onClick={() => setDialog("sellDonor")}
+        >
+          <HandCoins size={16} />
+          {t("warehouse.orderActions.sellDonor")}
+        </Button>
+      </HintTooltip>
       {dialog === "toDonor" && (
         <ToDonorDialog
           orderId={orderId}
@@ -62,12 +70,8 @@ export const OrderWarehouseActions = ({
           onClose={() => setDialog(null)}
         />
       )}
-      {dialog === "swap" && (
-        <DonorSwapDialog
-          orderId={orderId}
-          locationId={locationId}
-          onClose={() => setDialog(null)}
-        />
+      {dialog === "sellDonor" && (
+        <SellDonorDialog orderId={orderId} onClose={() => setDialog(null)} />
       )}
     </>
   );

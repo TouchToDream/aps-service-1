@@ -21,7 +21,6 @@ import type {
   DictionaryRef,
   Donor,
   DonorDetail,
-  DonorHandOver,
   DonorPart,
   DonorShort,
   NewDonor,
@@ -131,7 +130,7 @@ export function mapDonorDto(dto: DonorDto): Donor {
       : null,
     sourceOrderId: dto.source_order_id,
     origin: dto.origin,
-    handedOverOrderId: dto.handed_over_order_id,
+    soldInOrderId: dto.sold_in_order_id,
     supplier: dto.supplier ? mapSupplierDtoToSupplier(dto.supplier) : null,
     location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
     acquisitionCost: dto.acquisition_cost,
@@ -152,9 +151,6 @@ export function mapDonorPartDto(dto: DonorPartDto): DonorPart {
     location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
     note: dto.note,
     photoUrl: dto.photo_url,
-    isAvailable: dto.is_available,
-    usedInOrderId: dto.used_in_order_id,
-    usedInQuickOrderId: dto.used_in_quick_order_id,
   };
 }
 
@@ -208,6 +204,7 @@ export function mapWarehouseSearchResultDto(
       ? mapStoragePlaceDto(dto.storage_place)
       : null,
     location: dto.location ? mapLocationDtoToLocation(dto.location) : null,
+    donor: dto.donor ? mapDonorShortDto(dto.donor) : null,
   };
 }
 
@@ -266,14 +263,5 @@ export function mapNewDonorPartToDto(part: NewDonorPart) {
     storage_place_name: getNewRefName(part.storagePlace),
     location_id: part.locationId,
     note: part.note || null,
-  };
-}
-
-export function mapDonorHandOverToDto(handOver: DonorHandOver) {
-  return {
-    order_id: handOver.orderId,
-    price: handOver.price,
-    storage_place_id: handOver.storagePlaceId,
-    manager_id: handOver.managerId,
   };
 }

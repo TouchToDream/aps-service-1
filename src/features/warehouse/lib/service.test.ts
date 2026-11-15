@@ -6,6 +6,9 @@ import {
   getWarehouseLineSource,
   getWarehouseSourceErrorMessage,
   mapDonorFormToNewDonor,
+  mapStoragePlaceFormValues,
+  prepareStoragePlaceList,
+  toggleSource,
 } from "@/features/warehouse/lib/service.ts";
 
 describe("getSignedStockQuantity", () => {
@@ -96,5 +99,59 @@ describe("mapDonorFormToNewDonor", () => {
     expect(dto).not.toHaveProperty("status");
     expect(dto.origin).toBe("Купили мертвяка на OLX");
     expect(dto).not.toHaveProperty("sourceOrderId");
+  });
+});
+
+describe("toggleSource", () => {
+  it("adds and removes a source, keeping the canonical order", () => {
+    expect(toggleSource([], "donor_part")).toEqual(["donor_part"]);
+    expect(toggleSource(["donor_part"], "showcase")).toEqual([
+      "showcase",
+      "donor_part",
+    ]);
+    expect(toggleSource(["showcase", "supply"], "showcase")).toEqual([
+      "supply",
+    ]);
+  });
+});
+
+describe("prepareStoragePlaceList", () => {
+  const places = [
+    { id: 1, name: "Коробка 3", locationId: 2 },
+    { id: 2, name: "Стол", locationId: null },
+    { id: 3, name: "Коробка 1", locationId: 1 },
+    { id: 4, name: "Ящик", locationId: 1 },
+  ];
+
+  it("groups by office (no office last), then by name", () => {
+    expect(
+      prepareStoragePlaceList(places, undefined, "").map((p) => p.id),
+    ).toEqual([3, 4, 1, 2]);
+  });
+
+  it("filters by office and name", () => {
+    expect(prepareStoragePlaceList(places, "1", "").map((p) => p.id)).toEqual([
+      3, 4,
+    ]);
+    expect(
+      prepareStoragePlaceList(places, undefined, "короб").map((p) => p.id),
+    ).toEqual([3, 1]);
+  });
+});
+
+describe("mapStoragePlaceFormValues", () => {
+  it("turns the form's strings into a place, 'none' meaning no office", () => {
+    expect(
+      mapStoragePlaceFormValues({ name: " Стелаж А-1 ", location_id: "1" }),
+    ).toEqual({
+      name: "Стелаж А-1",
+      locationId: 1,
+    });
+    expect(
+      mapStoragePlaceFormValues({ name: "Стол", location_id: "none" }),
+    ).toEqual({
+      name: "Стол",
+      locationId: null,
+    });
   });
 });
