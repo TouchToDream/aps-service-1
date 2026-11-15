@@ -15,7 +15,7 @@ type OrderTableCardButton = {
 
 interface OrderTableCardProps<T extends { id: string | number }> {
   buttons?: OrderTableCardButton[];
-  /** Extra controls in the same row, after the "+ add" buttons. */
+  /** Extra controls in the same row, pushed to its right edge. */
   actions?: ReactNode;
   columns: InfoTableColumn<T>[];
   data: T[];
@@ -59,7 +59,7 @@ export const OrderTableCard = <T extends { id: string | number }>({
                 {btn.label}
               </Button>
             ))}
-            {actions}
+            {actions && <div className="ml-auto">{actions}</div>}
           </div>
         )}
         <InfoTable

@@ -33,7 +33,7 @@ export const OrderWarehouseActions = ({
   const hasLocation = locationId !== null;
 
   return (
-    <>
+    <div className="flex gap-2">
       <HintTooltip
         hint={
           hasLocation
@@ -44,23 +44,23 @@ export const OrderWarehouseActions = ({
         <Button
           type="button"
           variant="outline"
-          className="text-base"
+          size="icon"
+          aria-label={t("warehouse.orderActions.toDonor")}
           disabled={!hasLocation}
           onClick={() => setDialog("toDonor")}
         >
           <PackageOpen size={16} />
-          {t("warehouse.orderActions.toDonor")}
         </Button>
       </HintTooltip>
       <HintTooltip hint={t("warehouse.orderActions.sellDonorHint")}>
         <Button
           type="button"
           variant="outline"
-          className="text-base"
+          size="icon"
+          aria-label={t("warehouse.orderActions.sellDonor")}
           onClick={() => setDialog("sellDonor")}
         >
           <HandCoins size={16} />
-          {t("warehouse.orderActions.sellDonor")}
         </Button>
       </HintTooltip>
       {dialog === "toDonor" && (
@@ -73,6 +73,6 @@ export const OrderWarehouseActions = ({
       {dialog === "sellDonor" && (
         <SellDonorDialog orderId={orderId} onClose={() => setDialog(null)} />
       )}
-    </>
+    </div>
   );
 };
